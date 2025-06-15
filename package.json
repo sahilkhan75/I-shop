@@ -1,0 +1,29 @@
+{
+  "name": "i-shop",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd frontend && npm run dev\" \"cd backend && node --watch index\""
+  },
+  "keywords": [],
+  "author": "Sahil Khan",
+  "license": "ISC",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahilkhan75/I-shop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sahilkhan75/I-shop/issues"
+  },
+  "homepage": "https://github.com/sahilkhan75/I-shop#readme",
+  "dependencies": {
+    "concurrently": "^9.1.2",
+    "react-toastify": "^11.0.5",
+    "sweetalert2": "^11.21.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.7"
+  }
+}
