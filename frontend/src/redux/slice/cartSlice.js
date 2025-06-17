@@ -52,12 +52,31 @@ export const cartSlice = createSlice({
             }
             localStorage.setItem('cart', JSON.stringify(state));
 
+        },
+        setCartFromDb(state, action) {
+            const dbCart = action.payload; // array of cart items from backend
+            state.item = [];
+            state.finalTotal = 0;
+            state.orignalTotal = 0;
+
+            dbCart.forEach(item => {
+                state.item.push({
+                    productId: item.product_id._id, // from populate
+                    qty: item.qty
+                });
+
+                state.finalTotal += Number(item.product_id.finalPrice) * item.qty;
+                state.orignalTotal += Number(item.product_id.orignalPrice) * item.qty;
+            });
+
+            localStorage.setItem('cart', JSON.stringify(state));
         }
+
 
     },
 })
 
-export const { lsToCart, addItem, qtyHandler } = cartSlice.actions
+export const { lsToCart, addItem, qtyHandler ,setCartFromDb} = cartSlice.actions
 
 export default cartSlice.reducer
 

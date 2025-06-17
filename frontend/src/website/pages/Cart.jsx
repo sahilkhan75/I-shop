@@ -18,13 +18,14 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
   console.log(user , "userr");
+  console.log(cart,"cart")
 
 
   const checkOutHandler = () => {
     if (user.data && user.userToken){
-      navigate("/checkout?ref=checkout");
+      navigate("/checkout");
     } else {
-      navigate("/login");
+      navigate("/login?ref=checkout");
     }
   };
 

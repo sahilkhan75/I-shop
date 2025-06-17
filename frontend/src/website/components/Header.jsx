@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { lsToCart } from '../../redux/slice/cartSlice';
+import { userLogout } from '../../redux/slice/userSlice';
 
 
 
@@ -71,10 +72,12 @@ const Header = () => {
                   <div className="font-semibold cursor-pointer text-black hover:text-teal-600 transition">LOG IN |</div>
                 </Link>
                 :
-                <div className="cursor-pointer font-semibold text-black hover:text-teal-600 transition" >
+                <div
+                  onClick={() => dispatch(userLogout())}
+                  className="cursor-pointer font-semibold text-black hover:text-teal-600 transition"
+                >
                   LOG OUT |
                 </div>
-
 
 
             }
