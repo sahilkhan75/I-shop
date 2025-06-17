@@ -87,7 +87,6 @@ export default function AuthForm() {
 
 
 
-
   const handleRegister = async (e) => {
     e.preventDefault();
     const name = e.target.name.value.trim();
