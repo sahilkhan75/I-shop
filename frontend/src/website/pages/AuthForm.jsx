@@ -21,6 +21,7 @@ export default function AuthForm() {
   const storedCart = JSON.parse(localStorage.getItem("cart"));
   const cart = storedCart?.item || [];
 
+
   useEffect(() => {
     if (user) {
       const redirectTo = searchParams.get("ref") === "checkout" ? "/checkout" : "/";
@@ -49,6 +50,10 @@ export default function AuthForm() {
           cart,
           user_id: userId,
         });
+
+
+        console.log(moveCartRes , "movecartes")
+             
 
         const updatedItems = moveCartRes.data.cart.map((item) => ({
           productId: item.product_id._id,

@@ -7,10 +7,12 @@ import { useContext, useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { MainContext } from "../../Context";
 import { Link, useSearchParams, useParams } from "react-router-dom";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addItem } from '../../redux/slice/cartSlice';
+import axios from 'axios';
 // import { hex } from 'framer-motion';
 export default function Store() {
+    const user = useSelector((state) => state.user?.data)
     const dispacher = useDispatch()
     const { categorySlug } = useParams();
     // console.log(categorySlug);
@@ -53,6 +55,26 @@ export default function Store() {
         },
         [limit, categorySlug, colorSlug]
     )
+
+
+    async function carthandler(data) {
+
+        if (user !== null) {
+            const response = await axios.post(`${API_BASE_URL}/cart/add-to-cart`, {
+                userId: user?._id,
+                productId: data.productId,
+                qty: 1
+            })
+
+            console.log(response)
+        }
+        
+        dispacher(
+            addItem(data)
+        )
+    }
+
+
     return (
         <>
             <TopSells />
@@ -169,15 +191,11 @@ export default function Store() {
                                     {/* Add to Cart Button */}
                                     <button
                                         onClick={() => {
-                                            dispacher(
-                                                addItem({
-                                                    productId: product._id,
-                                                    finalPrice: product.finalPrice,
-                                                    originalPrice: product.originalPrice,
-                                                })
-                                            )
-                                            // console.log('hello');
-
+                                            carthandler({
+                                                productId: product._id,
+                                                finalPrice: product.finalPrice,
+                                                originalPrice: product.originalPrice,
+                                            })
                                         }}
                                         className="mt-4 w-full bg-white hover:bg-gradient-to-r from-white to-yellow-700 hover:text-black transition transform hover:scale-105 text-black font-semibold text-sm sm:text-base py-2 rounded-lg shadow-md"
                                     >
