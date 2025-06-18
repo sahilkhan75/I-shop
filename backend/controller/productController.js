@@ -165,11 +165,10 @@ const productController = {
                     unlinkSync("./public/images/product/" + product.thumbnail);
                     res.send({ msg: `Product delete`, flag: 1 })
                 }
-
-
             }
 
         } catch (error) {
+            console.log(error)
             res.send({ msg: "Internal server error", flag: 0 })
         }
     },

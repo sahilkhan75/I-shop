@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema(
         longDescription: {
             type: String
         },
-        orignalPrice: {
+        originalPrice: {
             type: Number,
             default: 1
         },
@@ -28,12 +28,14 @@ const productSchema = new mongoose.Schema(
             default: 0
         },
         finalPrice: {
-            type: String,
+            type: Number,
             min: 1
         },
         categoryId: {
             type: mongoose.Schema.ObjectId,
-            ref: "Category"
+            ref: "Category",
+            required: true
+
         },
         colors: [
             {

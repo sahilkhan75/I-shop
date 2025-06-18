@@ -5,7 +5,9 @@ const initialState = {
     userToken: null
 }
 
+
 export const userSlice = createSlice({
+
     name: 'user',
     initialState,
     reducers: {
@@ -32,8 +34,7 @@ export const userSlice = createSlice({
             state.data = null;
             state.userToken = null;
             localStorage.removeItem("user")
-
-            // localStorage.removeItem("adminTimeStamp")
+            localStorage.removeItem("adminTimeStamp")
         },
 
 

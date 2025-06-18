@@ -7,7 +7,7 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { lsToCart } from '../../redux/slice/cartSlice';
+import { emptycart, lsToCart } from '../../redux/slice/cartSlice';
 import { userLogout } from '../../redux/slice/userSlice';
 
 
@@ -23,6 +23,11 @@ const Header = () => {
       dispatch(lsToCart())
     }, []
   )
+
+  function logouthandler() {
+    dispatch(userLogout())
+    dispatch(emptycart())
+  }
 
 
   return (
@@ -73,7 +78,7 @@ const Header = () => {
                 </Link>
                 :
                 <div
-                  onClick={() => dispatch(userLogout())}
+                  onClick={logouthandler}
                   className="cursor-pointer font-semibold text-black hover:text-teal-600 transition"
                 >
                   LOG OUT |

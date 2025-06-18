@@ -1,15 +1,17 @@
 import { useContext, useRef, useState } from "react";
 import { FaArrowLeft, FaPlus } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
 import { MainContext } from "../../../Context";
 import { useSelector } from "react-redux";
 
 export default function AddCategory() {
+    const navigator = useNavigate()
     const admin = useSelector((state) => state.admin)
     console.log("admin in AddCategory:", admin);    
     console.log(admin);
     const formData = new FormData();
+
 
     const { API_BASE_URL, CATEGORY_URL, notify } = useContext(MainContext)
     const nameref = useRef();
@@ -45,6 +47,8 @@ export default function AddCategory() {
                     notify(res.data.msg, res.data.flag);
                     if (res.data.flag === 1) {
                         e.target.reset();
+                        // navigator(" /")
+
                     }
                 }
             ).catch(

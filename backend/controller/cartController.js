@@ -107,7 +107,6 @@
 const CartModel = require("../model/cartModel");
 
 const cartController = {
-    // Sync local cart to DB
     async moveToDb(req, res) {
         try {
             const { cart, user_id } = req.body;
@@ -153,7 +152,11 @@ const cartController = {
         }
     },
 
-    // Fetch cart from DB (for new browser sessions)
+
+
+
+
+    
     async getUserCart(req, res) {
         try {
             const { user_id } = req.params;

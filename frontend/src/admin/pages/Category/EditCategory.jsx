@@ -14,6 +14,7 @@ export default function EditCategory() {
     // const formData = new FormData();
 
     const { API_BASE_URL, CATEGORY_URL, notify, getCategory, Categories } = useContext(MainContext)
+    console.log(Categories,"Categories")
     const nameref = useRef();
     const slugref = useRef();
     // const fileRef = useRef();
@@ -86,7 +87,7 @@ export default function EditCategory() {
                             type="text"
                             placeholder="e.g. Electronics"
                             ref={nameref}
-                            name="Image"
+                            name="name"
                             defaultValue={Categories?.name}
                             onChange={ChangeHandler}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -102,6 +103,7 @@ export default function EditCategory() {
                             type="text"
                             ref={slugref}
                             placeholder="Auto-generated slug"
+                            name="slug"
                             defaultValue={Categories?.slug}
                             readOnly
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"

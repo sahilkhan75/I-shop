@@ -17,12 +17,12 @@ const Cart = () => {
   const { getProduct, products, API_BASE_URL } = useContext(MainContext);
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
-  console.log(user , "userr");
-  console.log(cart,"cart")
+  console.log(user, "userr");
+  console.log(cart, "cart")
 
 
   const checkOutHandler = () => {
-    if (user.data && user.userToken){
+    if (user.data && user.userToken) {
       navigate("/checkout");
     } else {
       navigate("/login?ref=checkout");
@@ -41,6 +41,7 @@ const Cart = () => {
         <div className="flex-1 space-y-6">
           {cart?.item?.map((item, index) => {
             const product = products.find((p) => p._id === item.productId);
+            console.log(product, "producccct")
             if (!product) return null;
 
             return (
@@ -56,7 +57,7 @@ const Cart = () => {
                     <h2 className="text-lg font-semibold">{product.name}</h2>
                     {index === 0 && (
                       <div className="bg-green-100 text-green-700 px-2 py-1 text-xs rounded">
-                        SAVE ${product.orignalPrice - product.finalPrice}
+                        SAVE ${product.originalPrice - product.finalPrice}
                       </div>
                     )}
                     {index !== 0 && (
@@ -69,20 +70,20 @@ const Cart = () => {
                   <p className="text-xl font-bold text-red-500 mt-2">
                     ${product.finalPrice}
                   </p>
-                  {product.finalPrice < product.orignalPrice && (
-                    <p className="text-sm text-gray-400 line-through">${product.orignalPrice}</p>
+                  {product.finalPrice < product.originalPrice && (
+                    <p className="text-sm text-gray-400 line-through">${product.originalPrice}</p>
                   )}
 
                   <div className="flex items-center mt-2 space-x-2">
                     <button
-                      onClick={() => handlerCart({ productId: item.productId, type: 'dec', finalPrice: product.finalPrice, orignalPrice: product.orignalPrice })}
+                      onClick={() => handlerCart({ productId: item.productId, type: 'dec', finalPrice: product.finalPrice, originalPrice: product.originalPrice })}
                       className="px-2 py-1 bg-gray-300 rounded"
                     >
                       -
                     </button>
                     <span>{item.qty}</span>
                     <button
-                      onClick={() => handlerCart({ productId: item.productId, type: 'inc', finalPrice: product.finalPrice, orignalPrice: product.orignalPrice })}
+                      onClick={() => handlerCart({ productId: item.productId, type: 'inc', finalPrice: product.finalPrice, originalPrice: product.originalPrice })}
                       className="px-2 py-1 bg-gray-300 rounded"
                     >
                       +
@@ -109,22 +110,19 @@ const Cart = () => {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span>Sub Total:</span>
-              <span className="font-semibold">${cart.orignalTotal}</span>
+              <span className="font-semibold">${cart.originalTotal} </span>
             </div>
-            <div className="flex justify-between">
-              <span>Shipping estimate:</span>
-              <span>$600.00</span>
-            </div>
+
             <div className="flex justify-between">
               <span>Tax estimate:</span>
-              <span>$137.00</span>
+              <span>{cart.originalTotal -cart.finalTotal}</span>
             </div>
             <div className="flex justify-between font-bold pt-2 border-t">
               <span>ORDER TOTAL:</span>
               <span>${cart.finalTotal}</span>
             </div>
           </div>
- 
+
           <button
             onClick={checkOutHandler}
             className="mt-4 w-full bg-green-500 hover:bg-green-400 text-white py-2 rounded-md font-semibold"
