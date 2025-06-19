@@ -33,7 +33,7 @@ const cartController = {
                 .populate({
                     path: 'product_id',
                     match: { status: true },
-                    select: '_id name thumbnail finalPrice orignalPrice'
+                    select: '_id name thumbnail finalPrice originalPrice'
                 })
                 .sort({ updatedAt: -1 });
 
@@ -96,7 +96,7 @@ const cartController = {
                 .populate({
                     path: 'product_id',
                     match: { status: true },
-                    select: '_id name thumbnail finalPrice orignalPrice',
+                    select: '_id name thumbnail finalPrice originalPrice',
                 })
                 .sort({ updatedAt: -1 });
 

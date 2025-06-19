@@ -66,7 +66,7 @@ export default function AuthForm() {
         );
 
         const originalTotal = moveCartRes.data.cart.reduce(
-          (acc, item) => acc + item.product_id.orignalPrice * item.qty,
+          (acc, item) => acc + item.product_id.originalPrice * item.qty,
           0
         );
 
@@ -75,7 +75,7 @@ export default function AuthForm() {
           JSON.stringify({
             item: updatedItems,
             finalTotal,
-            orignalTotal: originalTotal,
+            originalTotal: originalTotal,
           })
         );
 
