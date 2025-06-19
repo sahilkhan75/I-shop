@@ -29,6 +29,7 @@ import { useDispatch } from 'react-redux'
 import { lsAdmin } from './redux/slice/adminSlice'
 import { lsUser } from './redux/slice/userSlice'
 import HomePage from './website/pages/Homeeee'
+import MyAddress from './website/pages/MyAddress'
 
 export default function App() {
   const dispatcher = useDispatch()
@@ -56,6 +57,10 @@ export default function App() {
         {
           path: "/profile",
           element: <Profile />
+        },
+        {
+           path: "/profile/myaddress",
+           element:<MyAddress/>
         },
         {
           path: "/ghar",
