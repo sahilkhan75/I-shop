@@ -4,16 +4,67 @@ import { FaPaypal } from 'react-icons/fa';
 import { MdOutlineLocalShipping } from 'react-icons/md';
 import { BsBank, BsCash } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { MainContext } from '../../Context';
+import axios from 'axios';
 
 export default function Checkout() {
-  const user = useSelector((state) => state.user.data);
+  const user = useSelector((state) => state.user?.data);
+  console.log(user, "userrr")
+  const cart = useSelector((state) => state.cart)
+  console.log(cart, "carttt 123")
+  const { API_BASE_URL, notify } = useContext(MainContext)
   const [showSavedAddress, setShowSavedAddress] = useState(false);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
   const [useSavedAddress, setUseSavedAddress] = useState(false);
+  const [paymentMode, setpaymentMode] = useState(0)
+  const [form, setForm] = useState({
+    adressLine1: '',
+    adressLine2: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+    contact: ''
+  });
   const navigate = useNavigate();
 
   const savedAddresses = user?.shipping_address || [];
   const saved = savedAddresses[selectedAddressIndex] || {};
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const formatCurrencyINR = (amount) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 2
+    }).format(amount);
+  };
+
+
+  function handlePlaceOrder() {
+    axios.post(API_BASE_URL + "/order/place-order", {
+      user_id: user._id,
+      order_total: cart.finalTotal,
+      payment_mode: paymentMode,
+      shipping_details: user.shipping_address[selectedAddressIndex]
+    }).then(
+      (response) => {
+        notify(response.data.msg, response.data.flag)
+        if (response.data.flag == 1)
+          console.log(response.data)
+      }
+    ).catch(
+      (error) => {
+        console.log(error)
+      }
+    )
+  }
+
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -34,9 +85,8 @@ export default function Checkout() {
               {savedAddresses.map((address, index) => (
                 <div
                   key={index}
-                  className={`p-4 border rounded-md bg-white shadow-sm text-sm space-y-1 ${
-                    selectedAddressIndex === index ? 'border-yellow-400' : 'border-gray-200'
-                  }`}
+                  className={`p-4 border rounded-md bg-white shadow-sm text-sm space-y-1 ${selectedAddressIndex === index ? 'border-yellow-400' : 'border-gray-200'
+                    }`}
                 >
                   <p className="font-medium text-gray-700">{address.adressLine1}, {address.city}, {address.state}</p>
                   <p className="text-gray-500 text-sm">{address.country} - {address.postalCode}</p>
@@ -55,7 +105,7 @@ export default function Checkout() {
               ))}
 
               <button
-                onClick={() => navigate("/profile/myaddress" )}
+                onClick={() => navigate("/profile/myaddress")}
                 className="mt-4 text-sm text-yellow-600 border border-yellow-500 hover:bg-yellow-50 px-4 py-2 rounded"
               >
                 + Add New Address
@@ -70,63 +120,77 @@ export default function Checkout() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
+              name="adressLine1"
               placeholder="Address Line 1 *"
-              value={useSavedAddress ? saved.adressLine1 : ''}
-              disabled={useSavedAddress}
+              value={useSavedAddress ? saved.adressLine1 : form.adressLine1}
+              onChange={useSavedAddress ? undefined : handleChange}
               className="w-full p-3 border rounded-md"
+              disabled={useSavedAddress}
             />
 
             <input
               type="text"
+              name="adressLine2"
               placeholder="Address Line 2"
-              value={useSavedAddress ? saved.adressLine2 : ''}
-              disabled={useSavedAddress}
+              value={useSavedAddress ? saved.adressLine2 : form.adressLine2}
+              onChange={useSavedAddress ? undefined : handleChange}
               className="w-full p-3 border rounded-md"
+              disabled={useSavedAddress}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
+              name="city"
               placeholder="City *"
-              value={useSavedAddress ? saved.city : ''}
-              disabled={useSavedAddress}
+              value={useSavedAddress ? saved.city : form.city}
+              onChange={useSavedAddress ? undefined : handleChange}
               className="w-full p-3 border rounded-md"
+              disabled={useSavedAddress}
             />
 
             <input
               type="text"
+              name="state"
               placeholder="State *"
-              value={useSavedAddress ? saved.state : ''}
-              disabled={useSavedAddress}
+              value={useSavedAddress ? saved.state : form.state}
+              onChange={useSavedAddress ? undefined : handleChange}
               className="w-full p-3 border rounded-md"
+              disabled={useSavedAddress}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
+              name="postalCode"
               placeholder="Postal Code *"
-              value={useSavedAddress ? saved.postalCode : ''}
-              disabled={useSavedAddress}
+              value={useSavedAddress ? saved.postalCode : form.postalCode}
+              onChange={useSavedAddress ? undefined : handleChange}
               className="w-full p-3 border rounded-md"
+              disabled={useSavedAddress}
             />
 
             <input
               type="text"
+              name="country"
               placeholder="Country *"
-              value={useSavedAddress ? saved.country : ''}
-              disabled={useSavedAddress}
+              value={useSavedAddress ? saved.country : form.country}
+              onChange={useSavedAddress ? undefined : handleChange}
               className="w-full p-3 border rounded-md"
+              disabled={useSavedAddress}
             />
           </div>
 
           <input
             type="text"
+            name="contact"
             placeholder="Contact"
-            value={useSavedAddress ? saved.contact : ''}
-            disabled={useSavedAddress}
+            value={useSavedAddress ? saved.contact : form.contact}
+            onChange={useSavedAddress ? undefined : handleChange}
             className="w-full p-3 border rounded-md"
+            disabled={useSavedAddress}
           />
 
           <textarea
@@ -141,27 +205,23 @@ export default function Checkout() {
         <h2 className="text-lg font-semibold">Your Order</h2>
         <div className="border-t border-b py-4">
           <div className="flex justify-between text-sm font-medium">
-            <span>PRODUCT</span>
             <span>SUBTOTAL</span>
+            <span className="text-black-600">{formatCurrencyINR(cart.originalTotal)}</span>
           </div>
 
           <div className="flex items-center justify-between mt-4">
-            <div className="flex items-center gap-2">
-              <img src="https://cdn-icons-png.flaticon.com/512/777/777670.png" alt="Product" className="w-10 h-10 rounded" />
+            <div className="flex justify-between  text-base font-semibold">
+              Discount
               <div>
-                <p className="text-sm font-medium">Primestone Macbook Pro 2022</p>
-                <p className="text-xs text-gray-500">M1 / 512GB x 1</p>
-                <p className="text-xs text-green-600 flex items-center gap-1">
-                  <MdOutlineLocalShipping /> Free Shipping
-                </p>
+
               </div>
             </div>
-            <p className="text-sm text-red-500">+ $9.50</p>
+            <p className="text-sm text-red-500">{formatCurrencyINR(cart.originalTotal - cart.finalTotal)}</p>
           </div>
 
           <div className="flex justify-between mt-4 text-base font-semibold">
             <span>Order Total</span>
-            <span className="text-green-600">$1,746.50</span>
+            <span className="text-green-600">{formatCurrencyINR(cart.finalTotal)}</span>
           </div>
         </div>
 
@@ -184,7 +244,9 @@ export default function Checkout() {
           </label>
         </div>
 
-        <button className="w-full bg-green-500 text-white font-semibold py-3 rounded-md hover:bg-green-600 transition duration-300">
+        <button
+          onClick={handlePlaceOrder}
+          className="w-full bg-green-500 text-white font-semibold py-3 rounded-md hover:bg-green-600 transition duration-300">
           PLACE ORDER
         </button>
       </div>

@@ -68,12 +68,20 @@ export default function Store() {
 
             console.log(response)
         }
-        
+
         dispacher(
             addItem(data)
         )
     }
 
+
+    const formatCurrencyINR = (amount) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            maximumFractionDigits: 2
+        }).format(amount);
+    };
 
     return (
         <>
@@ -171,8 +179,8 @@ export default function Store() {
 
                                     {/* Price */}
                                     <p className="text-center font-bold text-base sm:text-lg mt-1">
-                                        <span className="text-yellow-400">{product.finalPrice}</span>{" "}
-                                        <span className="text-gray-500 line-through ml-2">{product.originalPrice}</span>
+                                        <span className="text-yellow-400">{formatCurrencyINR(product.finalPrice)}</span>{" "}
+                                        <span className="text-gray-500 line-through ml-2">{formatCurrencyINR(product.originalPrice)}</span>
                                     </p>
                                     {/* {
                                         console.log(product.finalPrice)
