@@ -17,8 +17,8 @@ const Cart = () => {
   const { getProduct, products, API_BASE_URL } = useContext(MainContext);
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
-  console.log(user, "userr");
-  console.log(cart, "cart")
+  // console.log(user, "userr");
+  // console.log(cart, "cart")
 
 
   const checkOutHandler = () => {
@@ -52,7 +52,7 @@ const Cart = () => {
         <div className="flex-1 space-y-6">
           {cart?.item?.map((item, index) => {
             const product = products.find((p) => p._id === item.productId);
-            console.log(product, "producccct")
+            // console.log(product, "producccct")
             if (!product) return null;
 
             return (

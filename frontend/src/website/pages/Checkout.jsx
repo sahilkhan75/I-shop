@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { FaPaypal } from 'react-icons/fa';
 import { MdOutlineLocalShipping } from 'react-icons/md';
@@ -7,12 +7,17 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { MainContext } from '../../Context';
 import axios from 'axios';
+import { emptycart } from '../../redux/slice/cartSlice';
+import { useRazorpay } from "react-razorpay";
+
+
 
 export default function Checkout() {
+  const { Razorpay } = useRazorpay();
   const user = useSelector((state) => state.user?.data);
-  console.log(user, "userrr")
+  // console.log(user, "userrr")
   const cart = useSelector((state) => state.cart)
-  console.log(cart, "carttt 123")
+  // console.log(cart, "carttt 123")
   const { API_BASE_URL, notify } = useContext(MainContext)
   const [showSavedAddress, setShowSavedAddress] = useState(false);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
@@ -28,6 +33,7 @@ export default function Checkout() {
     contact: ''
   });
   const navigate = useNavigate();
+  const dispatcher = useDispatch()
 
   const savedAddresses = user?.shipping_address || [];
   const saved = savedAddresses[selectedAddressIndex] || {};
@@ -47,6 +53,7 @@ export default function Checkout() {
 
 
   function handlePlaceOrder() {
+
     axios.post(API_BASE_URL + "/order/place-order", {
       user_id: user._id,
       order_total: cart.finalTotal,
@@ -56,7 +63,46 @@ export default function Checkout() {
       (response) => {
         notify(response.data.msg, response.data.flag)
         if (response.data.flag == 1)
-          console.log(response.data)
+          dispatcher(emptycart())
+        if (paymentMode == 0) {
+          navigate(`/thank-you/${response.data.order_id}`)
+          console.log(response.data.order_id, "response from checkout")
+        } else {
+
+          const options = {
+            key: "rzp_test_k2vnd0di0eUlMr",
+            // amount: 50000, // Amount in paise
+            currency: "INR",
+            name: "ISHOP",
+            // description: "Test Transaction",
+            order_id: response.data.razarpay_order_id, // Generate order_id on server
+            handler: (razarpay_response) => {
+              console.log(razarpay_response, "razarpayyy response");
+              axiosApiInstance.post("/order/success",
+                {
+                  order_id: response.data.order_id,
+                  user_id: user.data._id,
+                  razarpay_response
+                }).then(
+                  (response) => {
+                    if (response.data.flag == 1) {
+                      dispatcher(emptycart())
+                      navigate(`/thank-you/${response.data.order_id}`)
+                    }
+                  }
+                )
+            },
+            prefill: {
+              name: user?.data?.name,
+            },
+            theme: {
+              color: "#F37254",
+            },
+          };
+
+          const razorpayInstance = new Razorpay(options);
+          razorpayInstance.open();
+        };
       }
     ).catch(
       (error) => {
@@ -228,20 +274,20 @@ export default function Checkout() {
         {/* Payment Options */}
         <div className="space-y-3">
           <label className="flex items-start space-x-2">
-            <input type="radio" name="payment" className="mt-1 accent-green-600" />
+            <input type="radio" name="payment" className="mt-1 accent-green-600" onChange={()=>setpaymentMode(1)} />
             <span>
               <strong className="flex items-center gap-1"><BsBank /> Direct Bank Transfer</strong><br />
               Make your payment directly into our bank account. Use Order ID as reference.
             </span>
           </label>
           <label className="flex items-center space-x-2">
-            <input type="radio" name="payment" className="accent-gray-600" />
+            <input type="radio" name="payment" className="accent-gray-600"  onChange={()=>setpaymentMode(0)} />
             <span className="flex items-center gap-1"><BsCash /> Cash on Delivery</span>
           </label>
-          <label className="flex items-center space-x-2">
+          {/* <label className="flex items-center space-x-2">
             <input type="radio" name="payment" className="accent-blue-500" />
             <span className="flex items-center gap-1"><FaPaypal /> Paypal <a href="#" className="text-blue-500 underline">What is PayPal?</a></span>
-          </label>
+          </label> */}
         </div>
 
         <button

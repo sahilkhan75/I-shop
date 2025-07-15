@@ -1,6 +1,14 @@
 const CartModel = require("../model/cartModel");
 const orderModel = require("../model/orderModel");
 
+const Razorpay = require('razorpay');
+var instance = new Razorpay(
+  {
+    key_id: process.env.RAZARPAY_KEY_ID,
+    key_secret: process.env.RAZARPAY_KEY_SECRET
+  })
+
+
 
 const orderController = {
   async placeOrder(req, res) {
@@ -30,9 +38,34 @@ const orderController = {
           shipping_details: shipping_details,
           product_details: product_details,
         }
-      )
-      console.log(order, "orderrr")
-      res.send({ msg: "order place succesfully", flag: 1, order_id: order._id })
+      ).save()
+
+
+      if (payment_mode == 0) {
+        console.log(order, "orderrr")
+        await CartModel.deleteMany({ user_id })
+        res.send({ msg: "order place succesfully", flag: 1, order_id: order._id })
+      } else {
+        var options = {
+          amount: order_total * 100,  // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          currency: "INR",
+          receipt: order._id
+        };
+        instance.orders.create(options, async function (err, Razorpayorder) {
+
+          if (err) {
+            console.log(err, "error in razarpay")
+            res.seend({ msg: "payment failed", flag: 0 })
+          } else {
+            order.razorpay_order_id = Razorpayorder.id;
+            await order.save()
+            return res.send({ msg: "order placed succesfully", flag: 1, order_id: order._id, razorpay_order_id: Razorpayorder.id })
+          }
+
+        });
+
+      }
+
 
     } catch (error) {
       console.log(error)

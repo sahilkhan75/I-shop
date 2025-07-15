@@ -20,6 +20,7 @@
   "homepage": "https://github.com/sahilkhan75/I-shop#readme",
   "dependencies": {
     "concurrently": "^9.1.2",
+    "framer-motion": "^12.19.1",
     "react-toastify": "^11.0.5",
     "sweetalert2": "^11.21.0"
   },

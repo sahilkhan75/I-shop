@@ -30,12 +30,13 @@ import { lsAdmin } from './redux/slice/adminSlice'
 import { lsUser } from './redux/slice/userSlice'
 import HomePage from './website/pages/Homeeee'
 import MyAddress from './website/pages/MyAddress'
+import ThankYou from './website/pages/ThankYou'
 
 export default function App() {
   const dispatcher = useDispatch()
   useEffect(
     () => {
-      dispatcher(lsAdmin()) 
+      dispatcher(lsAdmin())
       dispatcher(lsUser())
     },
     []
@@ -59,8 +60,8 @@ export default function App() {
           element: <Profile />
         },
         {
-           path: "/profile/myaddress",
-           element:<MyAddress/>
+          path: "/profile/myaddress",
+          element: <MyAddress />
         },
         {
           path: "/ghar",
@@ -73,6 +74,10 @@ export default function App() {
         {
           path: "/checkout",
           element: <Checkout />
+        },
+        {
+          path: "/thank-you/:orderId",
+          element: <ThankYou />
         }
       ]
     },
