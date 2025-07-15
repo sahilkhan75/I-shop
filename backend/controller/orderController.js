@@ -1,7 +1,8 @@
 const CartModel = require("../model/cartModel");
 const orderModel = require("../model/orderModel");
-
+const crypto = require('crypto')
 const Razorpay = require('razorpay');
+const userModel = require("../model/userModel");
 var instance = new Razorpay(
   {
     key_id: process.env.RAZARPAY_KEY_ID,
@@ -61,7 +62,6 @@ const orderController = {
             await order.save()
             return res.send({ msg: "order placed succesfully", flag: 1, order_id: order._id, razorpay_order_id: Razorpayorder.id })
           }
-
         });
 
       }
@@ -72,6 +72,39 @@ const orderController = {
       res.send({ msg: "Internal server error", flag: 0 })
     }
 
+  },
+  async orderSuccess(req, res) {
+    try {
+      // console.log(req.body,"from success")
+      const { order_id, user_id, razorpay_response } = req.body;
+      const order = await orderModel.findById(order_id);
+      if (!order) {
+        return res.send({ msg: "order not found", flag: 0 });
+      }
+      const user = await userModel.findById(user_id)
+      if (!user) {
+        return res.send({ msg: "user not found", flag: 0 })
+      }
+
+      if(order.payment_status == 1 ){
+        return res.send({msg:"order already success  " , flag:0});
+      }
+
+      const generated_signature = crypto
+        .createHmac("sha256", process.env.RAZARPAY_KEY_SECRET)
+        .update( razorpay_response.razorpay_order_id +"|" + razorpay_response.razorpay_order_id )
+        .digest("hex");
+        console.log(generated_signature,"generated signature")
+        console.log(razorpay_response.razorpay_signature)
+        if(generated_signature !==razorpay_response.razorpay_signature){
+          return res.send({msg:"payment verification failed", flag:0});
+        }
+         
+
+
+    } catch (error) {
+
+    }
   }
 }
 

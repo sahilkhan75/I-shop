@@ -10,8 +10,6 @@ import axios from 'axios';
 import { emptycart } from '../../redux/slice/cartSlice';
 import { useRazorpay } from "react-razorpay";
 
-
-
 export default function Checkout() {
   const { Razorpay } = useRazorpay();
   const user = useSelector((state) => state.user?.data);
@@ -22,7 +20,7 @@ export default function Checkout() {
   const [showSavedAddress, setShowSavedAddress] = useState(false);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
   const [useSavedAddress, setUseSavedAddress] = useState(false);
-  const [paymentMode, setpaymentMode] = useState(0)
+  const [paymentMode, setpaymentMode] = useState(null)
   const [form, setForm] = useState({
     adressLine1: '',
     adressLine2: '',
@@ -54,6 +52,29 @@ export default function Checkout() {
 
   function handlePlaceOrder() {
 
+    const shippingDetails = useSavedAddress
+      ? savedAddresses[selectedAddressIndex]
+      : form;
+
+    const requiredFields = ['adressLine1', 'city', 'state', 'postalCode', 'country'];
+    for (let field of requiredFields) {
+      if (!shippingDetails?.[field]) {
+        notify(`Please enter ${field}`, 0);
+        return;
+      }
+    }
+
+    if (!shippingDetails.contact || shippingDetails.contact.trim().length < 10) {
+      notify("Please enter a valid contact number", 0);
+      return;
+    }
+
+
+    if (![0, 1].includes(paymentMode)) {
+      notify("Please select a payment mode", 0);
+      return;
+    }
+
     axios.post(API_BASE_URL + "/order/place-order", {
       user_id: user._id,
       order_total: cart.finalTotal,
@@ -68,14 +89,14 @@ export default function Checkout() {
           navigate(`/thank-you/${response.data.order_id}`)
           console.log(response.data.order_id, "response from checkout")
         } else {
-
           const options = {
             key: "rzp_test_k2vnd0di0eUlMr",
-            // amount: 50000, // Amount in paise
+            amount: cart.finalTotal * 100
+            , // Amount in paise
             currency: "INR",
             name: "ISHOP",
             // description: "Test Transaction",
-            order_id: response.data.razarpay_order_id, // Generate order_id on server
+            order_id: response.data.razorpay_order_id, // Generate order_id on server
             handler: (razarpay_response) => {
               console.log(razarpay_response, "razarpayyy response");
               axiosApiInstance.post("/order/success",
@@ -90,6 +111,10 @@ export default function Checkout() {
                       navigate(`/thank-you/${response.data.order_id}`)
                     }
                   }
+                ).catch(
+                 (error) =>{
+                  console.log(error)
+                 }
                 )
             },
             prefill: {
@@ -136,7 +161,7 @@ export default function Checkout() {
                 >
                   <p className="font-medium text-gray-700">{address.adressLine1}, {address.city}, {address.state}</p>
                   <p className="text-gray-500 text-sm">{address.country} - {address.postalCode}</p>
-                  {address.contact && <p className="text-sm text-gray-500">📞 {address.contact}</p>}
+                  {address.contact && <p className="text-sm text-gray-500">📞{address.contact}</p>}
 
                   <button
                     className="mt-2 text-sm text-white bg-green-600 hover:bg-green-700 px-4 py-1 rounded"
@@ -274,14 +299,14 @@ export default function Checkout() {
         {/* Payment Options */}
         <div className="space-y-3">
           <label className="flex items-start space-x-2">
-            <input type="radio" name="payment" className="mt-1 accent-green-600" onChange={()=>setpaymentMode(1)} />
+            <input type="radio" name="payment" className="mt-1 accent-green-600" onChange={() => setpaymentMode(1)} />
             <span>
               <strong className="flex items-center gap-1"><BsBank /> Direct Bank Transfer</strong><br />
               Make your payment directly into our bank account. Use Order ID as reference.
             </span>
           </label>
           <label className="flex items-center space-x-2">
-            <input type="radio" name="payment" className="accent-gray-600"  onChange={()=>setpaymentMode(0)} />
+            <input type="radio" name="payment" className="accent-gray-600" onChange={() => setpaymentMode(0)} />
             <span className="flex items-center gap-1"><BsCash /> Cash on Delivery</span>
           </label>
           {/* <label className="flex items-center space-x-2">
@@ -292,9 +317,12 @@ export default function Checkout() {
 
         <button
           onClick={handlePlaceOrder}
-          className="w-full bg-green-500 text-white font-semibold py-3 rounded-md hover:bg-green-600 transition duration-300">
+          disabled={useSavedAddress && selectedAddressIndex === null}
+          className="w-full bg-green-500 text-white font-semibold py-3 rounded-md hover:bg-green-600 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           PLACE ORDER
         </button>
+
       </div>
     </div>
   );

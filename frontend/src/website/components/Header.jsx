@@ -29,6 +29,14 @@ const Header = () => {
     dispatch(emptycart())
   }
 
+    const formatCurrencyINR = (amount) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 2
+    }).format(amount);
+  };
+
 
   return (
     <motion.div
@@ -103,9 +111,12 @@ const Header = () => {
             </motion.div>
           </Link>
 
-          <div className="font-bold text-gray-700">$1,689.00</div>
+          <div className="font-bold text-gray-700">{formatCurrencyINR(cart.finalTotal)}</div>
         </div>
       </motion.div >
+
+
+
 
 
       {/* Search + Info Bar */}
