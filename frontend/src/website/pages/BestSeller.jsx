@@ -156,7 +156,7 @@ const BestSeller = ({
                 </button>
               )}
             </div>
-          );
+          );``
         })}
       </div>
     </div>
