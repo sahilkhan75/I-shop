@@ -84,8 +84,8 @@ export default function Checkout() {
       (response) => {
         notify(response.data.msg, response.data.flag)
         if (response.data.flag == 1)
+          if (paymentMode == 0) {
           dispatcher(emptycart())
-        if (paymentMode == 0) {
           navigate(`/thank-you/${response.data.order_id}`)
           console.log(response.data.order_id, "response from checkout")
         } else {
@@ -97,24 +97,25 @@ export default function Checkout() {
             name: "ISHOP",
             // description: "Test Transaction",
             order_id: response.data.razorpay_order_id, // Generate order_id on server
-            handler: (razarpay_response) => {
-              console.log(razarpay_response, "razarpayyy response");
-              axiosApiInstance.post("/order/success",
+            handler: (razorpay_response) => {
+              console.log(razorpay_response, "razarpayyy response");
+              axios.post(API_BASE_URL + "/order/success",
                 {
                   order_id: response.data.order_id,
-                  user_id: user.data._id,
-                  razarpay_response
+                  user_id: user._id,
+                  razorpay_response
                 }).then(
                   (response) => {
                     if (response.data.flag == 1) {
                       dispatcher(emptycart())
                       navigate(`/thank-you/${response.data.order_id}`)
+                      console.log(response.data.msg);
                     }
                   }
                 ).catch(
-                 (error) =>{
-                  console.log(error)
-                 }
+                  (error) => {
+                    console.log(error)
+                  }
                 )
             },
             prefill: {

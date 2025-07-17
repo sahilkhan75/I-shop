@@ -65,7 +65,6 @@ export default function Store() {
                 productId: data.productId,
                 qty: 1
             })
-
             console.log(response)
         }
 
@@ -86,7 +85,6 @@ export default function Store() {
     return (
         <>
             <TopSells />
-            <BestSeller />
             {/* <AllCategories /> */}
 
             <div className="bg-gray-100 p-6 rounded-xl shadow-xl text-white">

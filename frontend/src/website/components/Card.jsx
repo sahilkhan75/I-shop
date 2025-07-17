@@ -1,10 +1,46 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { FaLaptop, FaCameraRetro } from "react-icons/fa";
 import { RiComputerFill } from "react-icons/ri";
 import { GiVibratingSmartphone } from "react-icons/gi";
 import { TbDeviceTabletShare } from "react-icons/tb";
+import BestSeller from "../pages/BestSeller";
+import { MainContext } from "../../Context";
+
+// const bestSellerProducts = [
+//   {
+//     tag: "SAVE $199.00",
+//     image: "/img/prod10.png.png",
+//     title: "OPod Pro 12.9 Inch M1 2023, 64GB + Wifi, GPS",
+//     price: "$569.00",
+//     oldPrice: "$759.00",
+//     shipping: "FREE SHIPPING",
+//     availability: "In stock",
+//     rating: 152,
+//   },
+//   {
+//     image: "/ImagesForProducts/headphone1.png",
+//     title: "BOSO 2 Wireless On Ear Headphone",
+//     price: "$359.00",
+//     shipping: "FREE SHIPPING",
+//     availability: "In stock",
+//     rating: 152,
+//   },
+//   {
+//     tag: "SAVE $59.00",
+//     image: "/img/prod11.png.png",
+//     title: "uLosk Mini case 2.0, Xenon i10 / 32GB / SSD 512GB / VGA 8GB",
+//     price: "$1,729.00",
+//     oldPrice: "$2,110.00",
+//     shipping: "FREE SHIPPING",
+//     availability: "Out of stock",
+//     rating: 8,
+//   },
+// ];
 
 const Card = () => {
+
+  const {products,getProduct,API_BASE_URL}=useContext(MainContext)
+
   const categories = [
     { label: "Laptops", icon: <FaLaptop />, count: 1 },
     { label: "PC & Computers", icon: <RiComputerFill />, count: 2 },
@@ -12,6 +48,14 @@ const Card = () => {
     { label: "Tablets", icon: <TbDeviceTabletShare />, count: 4 },
     { label: "Cameras", icon: <FaCameraRetro />, count: 5 },
   ];
+
+useEffect(
+  ()=>{
+  getProduct()
+  },[]
+)
+
+
   return (
     <>
       <div className="flex flex-col  p-4 rounded-2xl overflow-hidden">
@@ -178,117 +222,53 @@ const Card = () => {
         </div>
 
         {/* Pre Order Banner */}
-        <div className="bg-teal-500 text-white p-6 flex items-center justify-between mt-4">
-          <div>
-            <h3 className="text-xl font-semibold">PRE ORDER</h3>
-            <p className="text-sm">BE THE FIRST TO OWN</p>
-            <p className="mt-1 text-sm font-bold">From $399</p>
+
+        <div className="bg-teal-500 flex items-center justify-between rounded-xl overflow-hidden">
+          {/* Left Section */}
+          <div className="text-white p-6">
+            <h3 className="text-lg font-semibold">PRE ORDER</h3>
+            <p className="text-xs">BE THE FIRST TO OWN</p>
+            <p className="mt-2 text-base font-bold">From $399</p>
           </div>
-          <img src="/img/products/watch.png" alt="Smartwatch" className="h-20 object-contain" />
-          <button className="bg-white text-teal-600 px-4 py-2 rounded-full text-sm font-semibold">Discover Now</button>
+
+          {/* Middle Image */}
+          <div className="flex-shrink-0">
+            <img
+              src="/img/banner.png"
+              alt="Smartwatch"
+              className="h-31 object-contain"
+            />
+          </div>
+
+          {/* Right Text */}
+          <div className="text-white text-left pr-6">
+            <p className="text-sm">Opple Watch Sport</p>
+            <p className="text-sm">Series 8</p>
+            <h1 className="text-xl font-semibold mt-1">A healthy leap ahead</h1>
+          </div>
+
+          {/* Button */}
+          <div className="pr-6">
+            <button className="bg-white text-teal-600 px-5 py-2 rounded-full text-sm font-semibold shadow">
+              Discover Now
+            </button>
+          </div>
         </div>
+
+
       </div>
 
 
 
       {/* // Add this inside your Card component return() just after the last </div> of your existing code */}
-      <div className="mt-12 bg-white p-6 rounded-2xl shadow-md">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex gap-6">
-            <h2 className="text-lg font-bold">BEST SELLER</h2>
-            <span className="text-gray-500 cursor-pointer hover:text-black">NEW IN</span>
-            <span className="text-gray-500 cursor-pointer hover:text-black">POPULAR</span>
-          </div>
-          <a href="#" className="text-sm text-gray-600 hover:underline">View All</a>
-        </div>
 
-        {/* Product Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {/* Card 1 */}
-          <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
-            <img src="/img/products/headphone.png" alt="Headphone" className="h-24 object-contain mb-2" />
-            <p className="text-xs text-gray-400">(152)</p>
-            <h3 className="font-semibold mt-1">BOSO 2 Wireless On Ear Headphone</h3>
-            <p className="text-lg font-bold mt-1">$359.00</p>
-            <div className="flex gap-2 justify-center mt-2">
-              <span className="bg-teal-50 text-teal-500 text-xs font-semibold px-2 py-1 rounded-full">FREE SHIPPING</span>
-              <span className="bg-teal-50 text-teal-500 text-xs font-semibold px-2 py-1 rounded-full">FREE GIFT</span>
-            </div>
-            <div className="flex items-center justify-center gap-1 text-sm text-green-600 mt-2">
-              <span className="w-2 h-2 bg-teal-500 rounded-full"></span> In stock
-            </div>
-            <div className="flex gap-2 mt-2">
-              <img src="/img/products/variant1.png" alt="variant" className="h-6 rounded-full" />
-              <img src="/img/products/variant2.png" alt="variant" className="h-6 rounded-full" />
-            </div>
-          </div>
 
-          {/* Card 2 */}
-          <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
-            <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">SAVE $199.00</div>
-            <img src="/img/products/ipad.png" alt="iPad" className="h-24 object-contain mb-2" />
-            <p className="text-xs text-gray-400">(152)</p>
-            <h3 className="font-semibold mt-1">OPod Pro 12.9 Inch M1 2023, 64GB + Wifi, GPS</h3>
-            <div className="mt-1">
-              <span className="text-teal-500 font-bold text-lg">$569.00</span>
-              <span className="line-through text-gray-400 ml-2">$759.00</span>
-            </div>
-            <div className="flex gap-2 justify-center mt-2">
-              <span className="bg-teal-50 text-teal-500 text-xs font-semibold px-2 py-1 rounded-full">FREE SHIPPING</span>
-            </div>
-            <div className="flex items-center justify-center gap-1 text-sm text-green-600 mt-2">
-              <span className="w-2 h-2 bg-teal-500 rounded-full"></span> In stock
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
-            <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">SAVE $59.00</div>
-            <img src="/img/products/macmini.png" alt="Mac Mini" className="h-24 object-contain mb-2" />
-            <p className="text-xs text-gray-400">(8)</p>
-            <h3 className="font-semibold mt-1">uLosk Mini case 2.0, Xenon i10 / 32GB / SSD 512GB / VGA 8GB</h3>
-            <div className="mt-1">
-              <span className="text-teal-500 font-bold text-lg">$1,729.00</span>
-              <span className="line-through text-gray-400 ml-2">$2,110.00</span>
-            </div>
-            <div className="flex gap-2 justify-center mt-2">
-              <span className="bg-teal-50 text-teal-500 text-xs font-semibold px-2 py-1 rounded-full">FREE SHIPPING</span>
-            </div>
-            <div className="flex items-center justify-center gap-1 text-sm text-red-500 mt-2">
-              <span className="w-2 h-2 bg-red-500 rounded-full"></span> Out of stock
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
-            <img src="/img/products/watch.png" alt="Smartwatch" className="h-24 object-contain mb-2" />
-            <p className="text-xs text-gray-400">(—)</p>
-            <h3 className="font-semibold mt-1">Opplo Watch Series 8 GPS + Cellular Stainless Steel Case with Milanese Loop</h3>
-            <div className="mt-1 text-lg font-bold">$979.00 - $1,259.00</div>
-            <div className="flex gap-2 justify-center mt-2">
-              <span className="bg-gray-100 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">$2.98 SHIPPING</span>
-            </div>
-            <div className="text-sm text-gray-500 mt-1">PRE - ORDER</div>
-          </div>
-
-          {/* Card 5 */}
-          <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
-            <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">SAVE $3.00</div>
-            <img src="/img/products/charger.png" alt="Charger" className="h-24 object-contain mb-2" />
-            <p className="text-xs text-gray-400">(9)</p>
-            <h3 className="font-semibold mt-1">iSmart 24V Charger</h3>
-            <div className="mt-1">
-              <span className="text-teal-500 font-bold text-lg">$9.00</span>
-              <span className="line-through text-gray-400 ml-2">$12.00</span>
-            </div>
-            <div className="flex gap-2 justify-center mt-2">
-              <span className="bg-gray-100 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">$3.98 SHIPPING</span>
-            </div>
-            <div className="text-sm text-gray-500 mt-1">Contact</div>
-          </div>
-        </div>
-      </div>
+         <BestSeller
+        products={products}
+        // API_BASE_URL={API_BASE_URL}
+        // formatCurrencyINR={formatCurrencyINR}
+        // onAddToCart={(p) => carthandler(p)}
+      />
 
 
       <div className="bg-white py-6 px-4 md:px-12 text-[#1a1a1a]">
@@ -531,3 +511,104 @@ const Card = () => {
 };
 
 export default Card;
+
+
+
+
+// <div className="mt-12 bg-white p-6 rounded-2xl shadow-md">
+//         {/* Header */}
+//         <div className="flex justify-between items-center mb-6">
+//           <div className="flex gap-6">
+//             <h2 className="text-lg font-bold">BEST SELLER</h2>
+//             <span className="text-gray-500 cursor-pointer hover:text-black">NEW IN</span>
+//             <span className="text-gray-500 cursor-pointer hover:text-black">POPULAR</span>
+//           </div>
+//           <a href="#" className="text-sm text-gray-600 hover:underline">View All</a>
+//         </div>
+
+//         {/* Product Cards Grid */}
+//         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+//           {/* Card 1 */}
+//           <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
+//             <img src="/ImagesForProducts/headphone1.png" alt="Headphone" className="h-34 object-contain mb-2" />
+//             <p className="text-xs text-gray-400">(152)</p>
+//             <h3 className="font-semibold mt-1">BOSO 2 Wireless On Ear Headphone</h3>
+//             <p className="text-lg font-bold mt-1">$359.00</p>
+//             <div className="flex gap-2 justify-center mt-2">
+//               <span className="bg-teal-50 text-teal-500 text-xs font-semibold px-2 py-1 rounded-full">FREE SHIPPING</span>
+//               <span className="bg-teal-50 text-teal-500 text-xs font-semibold px-2 py-1 rounded-full">FREE GIFT</span>
+//             </div>
+//             <div className="flex items-center justify-center gap-1 text-sm text-green-600 mt-2">
+//               <span className="w-2 h-2 bg-teal-500 rounded-full"></span> In stock
+//             </div>
+//             <div className="flex gap-2 mt-2">
+//               <img src="/ImagesForProducts/headphone1.png" alt="variant" className="h-6 rounded-full" />
+//               <img src="/ImagesForProducts/headphone2.png" alt="variant" className="h-6 rounded-full" />
+//             </div>
+//           </div>
+
+//           {/* Card 2 */}
+//           <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
+//             <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">SAVE $199.00</div>
+//             <img src="/img/prod10.png.png" alt="iPad" className="h-24 object-contain mb-2" />
+//             <p className="text-xs text-gray-400">(152)</p>
+//             <h3 className="font-semibold mt-1">OPod Pro 12.9 Inch M1 2023, 64GB + Wifi, GPS</h3>
+//             <div className="mt-1">
+//               <span className="text-teal-500 font-bold text-lg">$569.00</span>
+//               <span className="line-through text-gray-400 ml-2">$759.00</span>
+//             </div>
+//             <div className="flex gap-2 justify-center mt-2">
+//               <span className="bg-teal-50 text-teal-500 text-xs font-semibold px-2 py-1 rounded-full">FREE SHIPPING</span>
+//             </div>
+//             <div className="flex items-center justify-center gap-1 text-sm text-green-600 mt-2">
+//               <span className="w-2 h-2 bg-teal-500 rounded-full"></span> In stock
+//             </div>
+//           </div>
+
+//           {/* Card 3 */}
+//           <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
+//             <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">SAVE $59.00</div>
+//             <img src="/img/prod11.png.png" alt="Mac Mini" className="h-24 object-contain mb-2" />
+//             <p className="text-xs text-gray-400">(8)</p>
+//             <h3 className="font-semibold mt-1">uLosk Mini case 2.0, Xenon i10 / 32GB / SSD 512GB / VGA 8GB</h3>
+//             <div className="mt-1">
+//               <span className="text-teal-500 font-bold text-lg">$1,729.00</span>
+//               <span className="line-through text-gray-400 ml-2">$2,110.00</span>
+//             </div>
+//             <div className="flex gap-2 justify-center mt-2">
+//               <span className="bg-teal-50 text-teal-500 text-xs font-semibold px-2 py-1 rounded-full">FREE SHIPPING</span>
+//             </div>
+//             <div className="flex items-center justify-center gap-1 text-sm text-red-500 mt-2">
+//               <span className="w-2 h-2 bg-red-500 rounded-full"></span> Out of stock
+//             </div>
+//           </div>
+
+//           {/* Card 4 */}
+//           <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
+//             <img src="/img/prod12.png.png" alt="Smartwatch" className="h-24 object-contain mb-2" />
+//             <p className="text-xs text-gray-400">(—)</p>
+//             <h3 className="font-semibold mt-1">Opplo Watch Series 8 GPS + Cellular Stainless Steel Case with Milanese Loop</h3>
+//             <div className="mt-1 text-lg font-bold">$979.00 - $1,259.00</div>
+//             <div className="flex gap-2 justify-center mt-2">
+//               <span className="bg-gray-100 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">$2.98 SHIPPING</span>
+//             </div>
+//             <div className="text-sm text-gray-500 mt-1">PRE - ORDER</div>
+//           </div>
+
+//           {/* Card 5 */}
+//           <div className="relative flex flex-col items-center text-center p-4 border rounded-lg">
+//             <div className="absolute top-2 left-2 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">SAVE $3.00</div>
+//             <img src="/img/Link.png" alt="Charger" className="h-24 object-contain mb-2" />
+//             <p className="text-xs text-gray-400">(9)</p>
+//             <h3 className="font-semibold mt-1">iSmart 24V Charger</h3>
+//             <div className="mt-1">
+//               <span className="text-teal-500 font-bold text-lg">$9.00</span>
+//               <span className="line-through text-gray-400 ml-2">$12.00</span>
+//             </div>
+//             <div className="flex gap-2 justify-center mt-2">
+//               <span className="bg-gray-100 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">$3.98 SHIPPING</span>
+//             </div>
+//             <div className="text-sm text-gray-500 mt-1">Contact</div>
+//           </div>
+//         </div>
+//       </div>

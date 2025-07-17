@@ -62,11 +62,11 @@ const Header = () => {
         </div>
 
         <nav className="flex space-x-6 font-semibold text-gray-700">
-          <Link to={"/ghar"}>
+          <Link to={"/"}>
             <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">HOME</motion.div>
           </Link>
-          <Link to={"/"}>
-            <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">PRODUCTS</motion.div>
+          <Link to={"/ghar"}>
+            <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">ABOUT</motion.div>
           </Link>
           <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">CONTACT</motion.div>
           <Link to={"/store"}>
