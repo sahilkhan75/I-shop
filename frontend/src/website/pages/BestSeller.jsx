@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { MainContext } from "../../Context";
 
 /**
  * BestSeller
@@ -12,6 +13,7 @@ import React from "react";
  * - maxItems: number (default 5)
  */
 const BestSeller = ({
+
   products = [],
   API_BASE_URL = "",
   formatCurrencyINR = (n) => n,
@@ -19,7 +21,11 @@ const BestSeller = ({
   maxItems = 5,
 }) => {
   // pick top discounted products
+
+
   const bestSellers = React.useMemo(() => {
+
+
     if (!Array.isArray(products)) return [];
     const arr = products.map((p) => {
       const price = Number(p.finalPrice ?? 0);
@@ -92,17 +98,19 @@ const BestSeller = ({
                 </span>
               )}
 
-              {/* Index badge */}
-              <div className="absolute top-2 right-2 bg-gray-200 text-[10px] sm:text-xs text-black px-2 py-1 rounded shadow">
-                {i + 1}
-              </div>
+              
 
               {/* Image */}
-              <img
-                src={`${API_BASE_URL}/images/product/${product.thumbnail}`}
-                alt={product.name}
-                className="w-full object-cover rounded-lg mb-3"
-              />
+              <div className="w-full aspect-[4/5] overflow-hidden rounded-lg">
+                <img
+                  src={`${API_BASE_URL}/images/product/${product.thumbnail}`}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => (e.currentTarget.src = '/placeholder.png')}
+                />
+              </div>
+
+
 
               {/* Name */}
               <p className="text-sm sm:text-base text-gray-800 font-medium text-center line-clamp-2">
@@ -129,13 +137,12 @@ const BestSeller = ({
 
               {/* Stock */}
               <p
-                className={`text-sm text-center mt-1 ${
-                  stockText === "In stock"
-                    ? "text-green-600"
-                    : stockText === "Out of stock"
+                className={`text-sm text-center mt-1 ${stockText === "In stock"
+                  ? "text-green-600"
+                  : stockText === "Out of stock"
                     ? "text-red-500"
                     : "text-gray-500"
-                }`}
+                  }`}
               >
                 {stockText}
               </p>
@@ -156,7 +163,8 @@ const BestSeller = ({
                 </button>
               )}
             </div>
-          );``
+          ); ``
+
         })}
       </div>
     </div>

@@ -1,10 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { use, useContext, useEffect } from "react";
 import { FaLaptop, FaCameraRetro } from "react-icons/fa";
 import { RiComputerFill } from "react-icons/ri";
 import { GiVibratingSmartphone } from "react-icons/gi";
 import { TbDeviceTabletShare } from "react-icons/tb";
 import BestSeller from "../pages/BestSeller";
 import { MainContext } from "../../Context";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { addItem } from "../../redux/slice/cartSlice";
 
 // const bestSellerProducts = [
 //   {
@@ -37,9 +40,13 @@ import { MainContext } from "../../Context";
 //   },
 // ];
 
+
+
 const Card = () => {
 
-  const {products,getProduct,API_BASE_URL}=useContext(MainContext)
+  const { products, getProduct, API_BASE_URL } = useContext(MainContext)
+  const user = useSelector((state) => state.user?.data)
+  const dispacher = useDispatch()
 
   const categories = [
     { label: "Laptops", icon: <FaLaptop />, count: 1 },
@@ -49,11 +56,36 @@ const Card = () => {
     { label: "Cameras", icon: <FaCameraRetro />, count: 5 },
   ];
 
-useEffect(
-  ()=>{
-  getProduct()
-  },[]
-)
+  useEffect(
+    () => {
+      getProduct()
+    }, []
+  )
+
+  async function carthandler(data) {
+
+    if (user !== null) {
+      const response = await axios.post(`${API_BASE_URL}/cart/add-to-cart`, {
+        userId: user?._id,
+        productId: data.productId,
+        qty: 1
+      })
+      console.log(response)
+    }
+
+    dispacher(
+      addItem(data)
+    )
+  }
+
+
+  const formatCurrencyINR = (amount) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 2
+    }).format(amount);
+  };
 
 
   return (
@@ -263,12 +295,17 @@ useEffect(
       {/* // Add this inside your Card component return() just after the last </div> of your existing code */}
 
 
-         <BestSeller
+      <BestSeller
         products={products}
-        // API_BASE_URL={API_BASE_URL}
-        // formatCurrencyINR={formatCurrencyINR}
-        // onAddToCart={(p) => carthandler(p)}
+        API_BASE_URL={API_BASE_URL}
+        formatCurrencyINR={formatCurrencyINR}
+        onAddToCart={carthandler}
       />
+
+
+
+
+
 
 
       <div className="bg-white py-6 px-4 md:px-12 text-[#1a1a1a]">
@@ -277,39 +314,56 @@ useEffect(
           <h2 className="text-lg md:text-xl font-bold uppercase">Top Cellphones & Tablets</h2>
           <button className="text-sm text-gray-600 hover:underline">View All</button>
         </div>
+        <div className="flex flex-col lg:flex-row gap-6 h-full">
+  {/* Left Banner */}
+  <div
+    className="w-full lg:w-1/2 rounded-lg flex items-center bg-cover bg-center bg-no-repeat p-6"
+    style={{
+      backgroundImage: "url('/ImagesForProducts/div.img.png')",
+      minHeight: "300px",
+    }}
+  >
+    <div className="max-w-xs bg-opacity-80 p-4  rounded">
+      <h3 className="text-2xl font-bold mb-2">REDMI NOTE 12 PRO+ 5G</h3>
+      <p className="text-sm text-gray-600 mb-4">Rise to the challenge</p>
+      <button className="bg-black text-white text-sm px-5 py-2 rounded hover:bg-gray-800">
+        SHOP NOW
+      </button>
+    </div>
+  </div>
 
-        {/* Banner */}
-        <div className="bg-gradient-to-r from-[#f4f1ef] to-[#d9e1ec] rounded-lg p-4 flex items-center mb-6">
-          <div className="flex-1">
-            <h3 className="text-xl font-semibold mb-1">Redmi Note 12 Pro+ 5G</h3>
-            <p className="text-sm text-gray-600 mb-2">Rise to the challenge</p>
-            <button className="bg-black text-white text-xs px-4 py-2 rounded">Shop Now</button>
-          </div>
-          <img src="/mnt/data/d243cd44-a398-4f96-a74e-e5d86462336e.png" alt="Phones" className="w-52 object-contain hidden sm:block" />
-        </div>
+  {/* Right Categories */}
+  <div className="w-full lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 gap-6">
+    {[
+      { img: "/ImagesForProducts/Link → prod20.png.png", label: "iPhone (iOS)", count: 74 },
+      { img: "/ImagesForProducts/Link → prod21.png.png", label: "Android", count: 35 },
+      { img: "/ImagesForProducts/Link → prod22.png.png", label: "5G Support", count: 12 },
+      { img: "/ImagesForProducts/Link → prod23.png.png", label: "Gaming", count: 9 },
+      { img: "/ImagesForProducts/Link → prod24.png.png", label: "Xiaomi", count: 52 },
+      { img: "/ImagesForProducts/Link → prod25.png.png", label: "Accessories", count: 29 },
+    ].map((cat, idx) => (
+      <div
+        key={idx}
+        className="flex flex-col items-center text-center p-2 rounded-lg hover:shadow-lg transition"
+      >
+        <img
+          src={cat.img}
+          alt={cat.label}
+          className="w-14 h-14 object-contain mb-1"
+        />
+        <p className="text-sm font-semibold">{cat.label}</p>
+        <span className="text-xs text-gray-500">{cat.count} Items</span>
+      </div>
+    ))}
+  </div>
+</div>
 
-        {/* Category Links */}
-        <div className="grid grid-cols-4 sm:grid-cols-6 gap-4 text-center text-xs mb-8">
-          {[
-            { label: "iPhone (iOS)", count: 74 },
-            { label: "Android", count: 35 },
-            { label: "5G Support", count: 12 },
-            { label: "Gaming", count: 9 },
-            { label: "Xiaomi", count: 52 },
-            { label: "Accessories", count: 29 },
-          ].map((cat, idx) => (
-            <div key={idx} className="flex flex-col items-center gap-1">
-              <div className="w-10 h-14 bg-gray-200 rounded-md" />
-              <div>
-                <p className="font-semibold text-sm">{cat.label}</p>
-                <span className="text-[11px] text-gray-500">{cat.count} Items</span>
-              </div>
-            </div>
-          ))}
-        </div>
+
+
+
 
         {/* Products List */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 pt-3">
           {/* Product Cards */}
           {[
             {
@@ -366,7 +420,7 @@ useEffect(
               <div className="w-full h-40 bg-gray-200 rounded mb-2" />
               {item.rating !== null && (
                 <p className="text-center text-xs text-gray-500">({item.rating})</p>
-              )}
+              )}  
               <h4 className="text-sm font-semibold mt-1">{item.title}</h4>
               <div className="text-sm flex flex-col gap-1 mt-1">
                 <div>
