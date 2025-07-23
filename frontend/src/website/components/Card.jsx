@@ -8,6 +8,8 @@ import { MainContext } from "../../Context";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { addItem } from "../../redux/slice/cartSlice";
+import { image } from "framer-motion/client";
+import { Link } from "react-router-dom";
 
 // const bestSellerProducts = [
 //   {
@@ -42,7 +44,82 @@ import { addItem } from "../../redux/slice/cartSlice";
 
 
 
+
+
 const Card = () => {
+
+  const ProductTile = ({ product, API_BASE_URL, formatCurrencyINR, onAddToCart }) => {
+    const imgSrc = product.thumbnail
+      ? `${API_BASE_URL}/images/product/${product.thumbnail}`
+      : "/placeholder.png";
+
+    return (
+      <div className="relative border rounded-lg p-3 shadow-sm hover:shadow-md transition bg-white">
+        {/* Stretched Link Overlay */}
+        <Link
+          to={`/product/${product._id}`}
+          aria-label={`View ${product.name}`}
+          className="absolute inset-0 z-[1]"
+        />
+
+        {/* Badge (discount) */}
+        {product.discountPercentage && (
+          <span className="absolute top-2 left-2 z-[2] bg-teal-500 text-white text-[11px] font-semibold px-2 py-1 rounded">
+            {product.discountPercentage}% OFF
+          </span>
+        )}
+
+        {/* Image */}
+        <img
+          src={imgSrc}
+          alt={product.name}
+          className="relative z-[2] w-full h-40 object-contain rounded mb-2 pointer-events-none"
+        />
+
+        {/* Rating placeholder (if you have it later) */}
+        {/* <p className="text-center text-xs text-gray-500">({product.reviewCount || 0})</p> */}
+
+        <h4 className="relative z-[2] text-sm font-semibold mt-1 line-clamp-2">
+          {product.name}
+        </h4>
+
+        <div className="relative z-[2] text-sm flex flex-col gap-1 mt-1">
+          <div>
+            <span className="text-green-600 font-bold">
+              {formatCurrencyINR(product.finalPrice)}
+            </span>
+            {product.originalPrice > product.finalPrice && (
+              <span className="text-gray-400 line-through ml-2">
+                {formatCurrencyINR(product.originalPrice)}
+              </span>
+            )}
+          </div>
+          <div className="text-[11px] text-gray-600">
+            {product.stock ? "In stock" : "Out of stock"}
+          </div>
+        </div>
+
+        {/* Add to Cart button stays clickable because higher z-index and stopPropagation */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault(); // don't trigger Link
+            onAddToCart?.({
+              productId: product._id,
+              price: product.finalPrice,
+              name: product.name,
+              thumbnail: product.thumbnail,
+            });
+          }}
+          className="relative z-[2] mt-2 w-full py-1.5 rounded bg-green-600 text-white text-xs font-semibold hover:bg-green-700"
+        >
+          Add to Cart
+        </button>
+      </div>
+    );
+  };
+
 
   const { products, getProduct, API_BASE_URL } = useContext(MainContext)
   const user = useSelector((state) => state.user?.data)
@@ -308,55 +385,59 @@ const Card = () => {
 
 
 
-      <div className="bg-white py-6 px-4 md:px-12 text-[#1a1a1a]">
+      <div className="bg-white py-6 px-4 md:px-12 text-[#1a1a1a] mt-3">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg md:text-xl font-bold uppercase">Top Cellphones & Tablets</h2>
           <button className="text-sm text-gray-600 hover:underline">View All</button>
         </div>
         <div className="flex flex-col lg:flex-row gap-6 h-full">
-  {/* Left Banner */}
-  <div
-    className="w-full lg:w-1/2 rounded-lg flex items-center bg-cover bg-center bg-no-repeat p-6"
-    style={{
-      backgroundImage: "url('/ImagesForProducts/div.img.png')",
-      minHeight: "300px",
-    }}
-  >
-    <div className="max-w-xs bg-opacity-80 p-4  rounded">
-      <h3 className="text-2xl font-bold mb-2">REDMI NOTE 12 PRO+ 5G</h3>
-      <p className="text-sm text-gray-600 mb-4">Rise to the challenge</p>
-      <button className="bg-black text-white text-sm px-5 py-2 rounded hover:bg-gray-800">
-        SHOP NOW
-      </button>
-    </div>
-  </div>
+          {/* Left Banner */}
+          <div
+            className="w-full lg:w-1/2 rounded-lg flex items-center bg-cover bg-center bg-no-repeat p-6"
+            style={{
+              backgroundImage: "url('/ImagesForProducts/div.img.png')",
+              minHeight: "300px",
+            }}
+          >
+            <div className="max-w-xs bg-opacity-80 p-4  rounded">
+              <h3 className="text-2xl font-bold mb-2">REDMI NOTE 12 PRO+ 5G</h3>
+              <p className="text-sm text-gray-600 mb-4">Rise to the challenge</p>
+              <button className="bg-black text-white text-sm px-5 py-2 rounded hover:bg-gray-800">
+                SHOP NOW
+              </button>
+            </div>
+          </div>
 
-  {/* Right Categories */}
-  <div className="w-full lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 gap-6">
-    {[
-      { img: "/ImagesForProducts/Link → prod20.png.png", label: "iPhone (iOS)", count: 74 },
-      { img: "/ImagesForProducts/Link → prod21.png.png", label: "Android", count: 35 },
-      { img: "/ImagesForProducts/Link → prod22.png.png", label: "5G Support", count: 12 },
-      { img: "/ImagesForProducts/Link → prod23.png.png", label: "Gaming", count: 9 },
-      { img: "/ImagesForProducts/Link → prod24.png.png", label: "Xiaomi", count: 52 },
-      { img: "/ImagesForProducts/Link → prod25.png.png", label: "Accessories", count: 29 },
-    ].map((cat, idx) => (
-      <div
-        key={idx}
-        className="flex flex-col items-center text-center p-2 rounded-lg hover:shadow-lg transition"
-      >
-        <img
-          src={cat.img}
-          alt={cat.label}
-          className="w-14 h-14 object-contain mb-1"
-        />
-        <p className="text-sm font-semibold">{cat.label}</p>
-        <span className="text-xs text-gray-500">{cat.count} Items</span>
-      </div>
-    ))}
-  </div>
-</div>
+          {/* Right Categories */}
+          <div className="w-full lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 gap-6">
+            {[
+              { img: "/img/ios.jpeg", label: "iPhone (iOS)", count: 74 },
+              { img: "/img/and.jpeg", label: "Android", count: 35 },
+              { img: "/img/note.jpeg", label: "5G Support", count: 12 },
+              { img: "/img/rog.jpeg", label: "Gaming", count: 9 },
+              { img: "/img/redmi.jpeg", label: "Xiaomi", count: 52 },
+              { img: "/img/acccc.jpeg", label: "Accessories", count: 29 },
+            ].map((cat, idx) => (
+              <div
+                key={idx}
+                className="flex flex-col items-center text-center p-2 rounded-lg hover:shadow-lg transition"
+              >
+
+                <Link to={`/store`}>
+                  <img
+                    src={cat.img}
+                    alt={cat.label}
+                    className="w-14 h-14 object-contain mb-1"
+                  />
+                </Link>
+
+                <p className="text-sm font-semibold">{cat.label}</p>
+                <span className="text-xs text-gray-500">{cat.count} Items</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
 
 
@@ -374,6 +455,7 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "In stock",
               rating: 152,
+              image: "/ImagesForProducts/Cart-images/175d4e01c3ccc08552a7608516d07ff4f2593a4a.png",
             },
             {
               tag: "NEW",
@@ -382,6 +464,7 @@ const Card = () => {
               shipping: "$2.98 SHIPPING",
               availability: "In stock",
               rating: null,
+              image: "/ImagesForProducts/Cart-images/f7311fe8359d8e443a010f51a2a03878d38edca5.png"
             },
             {
               title: "OPod Pro 12.9 Inch M1 2023, 64GB + Wifi, GPS",
@@ -390,6 +473,7 @@ const Card = () => {
               gift: true,
               availability: "In stock",
               rating: 5,
+              image: "/ImagesForProducts/Cart-images/14b8f205d1206e84bc641d12f9f38aea82fc858f.png"
             },
             {
               tag: "SAVE $59.00",
@@ -399,6 +483,7 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "Contact",
               rating: 9,
+              image: "/ImagesForProducts/Cart-images/e9716b3da8adab464285c71a3f34ecbb005d65b2.png"
             },
             {
               title: "Microsute Alpha Ultra S5 Surface 128GB 2022, Sliver",
@@ -406,6 +491,7 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "Contact",
               rating: 8,
+              image: "/ImagesForProducts/Cart-images/42eb7d4d774278b9ccbcc9f8fbb93c2ef1a71ce1.png"
             },
           ].map((item, idx) => (
             <div
@@ -417,10 +503,16 @@ const Card = () => {
                   {item.tag}
                 </span>
               )}
-              <div className="w-full h-40 bg-gray-200 rounded mb-2" />
+              <Link to={`/store`}>
+                <img
+                  src={item.image}
+                  className="w-full h-40 object-contain rounded mb-2"
+                />
+              </Link>
+
               {item.rating !== null && (
                 <p className="text-center text-xs text-gray-500">({item.rating})</p>
-              )}  
+              )}
               <h4 className="text-sm font-semibold mt-1">{item.title}</h4>
               <div className="text-sm flex flex-col gap-1 mt-1">
                 <div>
@@ -441,46 +533,68 @@ const Card = () => {
       </div>
 
 
-      <div className="bg-white py-6 px-4 md:px-12 text-[#1a1a1a]">
+      {/* Best Laptops & Computers Section */}
+      <div className="bg-white py-8 px-6 mt-3 md:px-12 text-[#1a1a1a] ">
         {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg md:text-xl font-bold uppercase">Best Laptops & Computers</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl md:text-2xl font-bold uppercase">Best Laptops & Computers</h2>
           <button className="text-sm text-gray-600 hover:underline">View All</button>
         </div>
 
-        {/* Banner */}
-        <div className="bg-[#1a1a1a] text-white rounded-lg p-4 flex items-center mb-6">
-          <div className="flex-1">
-            <h3 className="text-xl font-semibold mb-1">Mobok 2 Superchard</h3>
-            <p className="text-sm text-gray-300 mb-2">By M2</p>
-            <p className="text-sm">Start from <span className="text-teal-400">$1,199</span></p>
-          </div>
-          <img src="/mnt/data/30b6a60f-e26f-4f60-87da-6ee7a7a49070.png" alt="Laptop" className="w-52 object-contain hidden sm:block" />
-        </div>
-
-        {/* Category Links */}
-        <div className="grid grid-cols-4 sm:grid-cols-6 gap-4 text-center text-xs mb-8">
-          {[
-            { label: "Macbook", count: 74 },
-            { label: "Gaming PC", count: 5 },
-            { label: "Laptop Office", count: 22 },
-            { label: "Laptop 15\"", count: 55 },
-            { label: "M1 2023", count: 32 },
-            { label: "Secondhand", count: 16 },
-          ].map((cat, idx) => (
-            <div key={idx} className="flex flex-col items-center gap-1">
-              <div className="w-10 h-14 bg-gray-200 rounded-md" />
-              <div>
-                <p className="font-semibold text-sm">{cat.label}</p>
-                <span className="text-[11px] text-gray-500">{cat.count} Items</span>
-              </div>
+        {/* Top Banner + Categories Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
+          {/* Left Hero Banner (large) */}
+          <div className="relative lg:col-span-7 bg-[#1a1a1a] text-white rounded-lg overflow-hidden flex items-center px-6 py-8 min-h-[200px] sm:min-h-[240px] lg:min-h-[260px]">
+            <div className="z-10 max-w-[60%]">
+              <Link to={"/store"} >   <h3 className="text-2xl sm:text-3xl font-bold mb-1 leading-tight">Mobok 2 Superchard</h3></Link>
+              <p className="text-sm text-gray-300 mb-3">By M2</p>
+              <p className="text-sm">
+                Start from <span className="text-teal-400 font-semibold">$1,199</span>
+              </p>
             </div>
-          ))}
+            {/* Laptop image floats to the right; sized to fill height without distortion */}
+
+            <img
+              src="/ImagesForProducts/Cart-images/e303e1ffb65c970f4c4cf5f00fabaa92b15674f2.png"
+              alt="Mobok 2 Superchard"
+              className="absolute right-0 bottom-0 h-full w-auto max-w-[100%] object-cover pointer-events-none select-none hidden sm:block"
+            />
+          </div>
+
+          {/* Right Categories (small tiles) */}
+          <div className="lg:col-span-5 grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 xl:grid-cols-3 gap-4 text-center">
+            {[
+              { img: "/ImagesForProducts/Cart-images/m1.jpg", label: "Macbook", count: 74 },
+              { img: "/ImagesForProducts/Cart-images/gamingPC.jpg", label: "Gaming PC", count: 5 },
+              { img: "/ImagesForProducts/Cart-images/office LAP.jpg", label: "Laptop Office", count: 22 },
+              { img: "/ImagesForProducts/Cart-images/lap15.webp", label: 'Laptop 15"', count: 55 },
+              { img: "/ImagesForProducts/Cart-images/m1.jpg", label: "M1 2023", count: 32 },
+              { img: "/ImagesForProducts/Cart-images/second.avif", label: "Secondhand", count: 16 },
+            ].map((cat, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className="group flex flex-col items-center gap-2 p-2 rounded-md hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+              >
+
+                <Link to={`/store`}>
+                  <img
+                    src={cat.img}
+                    alt={cat.label}
+                    className="w-14 h-14 object-contain mb-1"
+                  />
+                </Link>
+                <div className="leading-tight">
+                  <p className="font-semibold text-xs sm:text-sm">{cat.label}</p>
+                  <span className="text-[11px] text-gray-500">{cat.count} Items</span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Products List */}
+        {/* Product Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {/* Product Cards */}
           {[
             {
               tag: "NEW",
@@ -490,6 +604,7 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "In stock",
               rating: 152,
+              image: "/ImagesForProducts/Cart-images/1ca36b05619c3f1e50a7b8603401775a7325fdd4.png"
             },
             {
               tag: "NEW",
@@ -498,6 +613,7 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "In stock",
               rating: null,
+              image: "/ImagesForProducts/Cart-images/f6f60ea46d8b07cf6ff73a6f143dfc4f482a31b6.png"
             },
             {
               title: "Gigaby Custome Case, i7/16GB / SSD 256GB",
@@ -506,6 +622,7 @@ const Card = () => {
               gift: true,
               availability: "In stock",
               rating: 5,
+              image: "/ImagesForProducts/Cart-images/484cfdfeca6774b75a0daedd905036de4f454488.png"
             },
             {
               tag: "SAVE $59.00",
@@ -515,6 +632,7 @@ const Card = () => {
               shipping: "$2.98 SHIPPING",
               availability: "Contact",
               rating: 9,
+              image: "/ImagesForProducts/Cart-images/b1b7613bb7ed916ace8b8f83d9ecfac26661212b.png"
             },
             {
               title: "aMoc All-in-one Computer M1",
@@ -522,23 +640,33 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "Contact",
               rating: 8,
+              image: "/ImagesForProducts/Cart-images/d7ac633809c95a64f35f896871461791156d9aba.png"
             },
           ].map((item, idx) => (
             <div
               key={idx}
-              className="relative border rounded-lg p-3 shadow-sm hover:shadow-md transition"
+              className="relative border rounded-lg p-4 shadow-sm hover:shadow-md transition bg-white"
+              img src={item.image} alt={item.title}
             >
               {item.tag && (
-                <span className="absolute top-2 left-2 bg-black text-white text-[11px] font-semibold px-2 py-1 rounded">
+                <span className="absolute top-2 left-2 bg-black text-white text-[10px] font-bold px-2 py-1 rounded">
                   {item.tag}
                 </span>
               )}
-              <div className="w-full h-40 bg-gray-200 rounded mb-2" />
+
+              <Link to={`/store`}>
+                <img
+                  src={item.image}
+                  className="w-full h-40 object-contain rounded mb-2"
+                />
+              </Link>
               {item.rating !== null && (
-                <p className="text-center text-xs text-gray-500">({item.rating})</p>
+                <p className="text-center text-xs text-gray-500 mb-1">({item.rating})</p>
               )}
-              <h4 className="text-sm font-semibold mt-1">{item.title}</h4>
-              <div className="text-sm flex flex-col gap-1 mt-1">
+
+              <h4 className="text-sm font-semibold mb-1 line-clamp-2">{item.title}</h4>
+
+              <div className="text-sm flex flex-col gap-1">
                 <div>
                   <span className="text-green-600 font-bold">{item.price}</span>
                   {item.oldPrice && (
@@ -557,7 +685,93 @@ const Card = () => {
       </div>
 
 
+      {/* //Audios and camera section// */}
 
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-3">
+        {[
+          {
+            title: "AUDIOS & CAMERAS",
+            banner: {
+              img: "/ImagesForProducts/Cart-images/4287fa38c8d866bc89c60a6964f589b77b86f480.png",
+              text: ["Best", "Speaker", "2023"],
+            },
+            items: [
+              { img: "/ImagesForProducts/Cart-images/32939a222a454356a0625debba6a324beee40795.png", label: "Speaker", count: "12 Items" },
+              { img: "/ImagesForProducts/Cart-images/fa3375f7764418cbe883d52926f078882a6a6b82.png", label: "DSLR Camera", count: "9 Items" },
+              { img: "/ImagesForProducts/Cart-images/82ce93988259871b60be5c8a191a8a02a08350e9.png", label: "Earbuds", count: "5 Items" },
+              { img: "/ImagesForProducts/Cart-images/c13645cc801cede6ea02c11d48dc37d65ac98e0f.png", label: "Microphone", count: "12 Items" },
+            ],
+          },
+          {
+            title: "GAMING",
+            banner: {
+              img: "/ImagesForProducts/Cart-images/8b3c63a69d896323e4b828d12292bd6f74e4b1f5.png",
+              text: ["WIRELESS", "RGB GAMING", "MOUSE"],
+            },
+            items: [
+              { img: "/ImagesForProducts/Cart-images/acfba31f3e9bc9ce9e19f94c6e0c402318990d1d.png", label: "Monitors", count: "28 Items" },
+              { img: "/ImagesForProducts/Cart-images/31651446aaa6aab207aec9c7d7fe95814319fe78.png", label: "Chair", count: "12 Items" },
+              { img: "/ImagesForProducts/Cart-images/dfb212b7a85d4fcbcd6180225b20a06e86e18273.png", label: "Controller", count: "9 Items" },
+              { img: "/ImagesForProducts/Cart-images/42bd867aafc85b2c1dba35d552d8d174e8c124b1.png", label: "Keyboards", count: "30 Items" },
+            ],
+          },
+          {
+            title: "OFFICE EQUIPMENTS",
+            banner: {
+              img: "/ImagesForProducts/Cart-images/de83be76be0b24b232e0d37f3d52526d56677083.png",
+              text: ["Home Thearther 4k", "Laser Projector"],
+            },
+            items: [
+              { img: "/ImagesForProducts/Cart-images/5992d4b46a1b70b35e3f9ba5c1921e89b1964e3a.png", label: "Printers", count: "9 Items" },
+              { img: "/ImagesForProducts/Cart-images/b7a0be7cf4d5d0244b2911fc339a38637e6373dd.png", label: "Network", count: "90 Items" },
+              { img: "/ImagesForProducts/Cart-images/f687da0c261bd55568958d470f44c37d86165564.png", label: "Security", count: "12 Items" },
+              { img: "/ImagesForProducts/Cart-images/83352eb322a7a6a60cacac49d5106da4bc433aaf.png", label: "Projectors", count: "12 Items" },
+            ],
+          },
+        ].map((section, sectionIndex) => (
+          <div key={sectionIndex} className="bg-white rounded-xl shadow-sm p-4">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-black">{section.title}</h2>
+              <a href="#" className="text-sm text-gray-500">View All</a>
+            </div>
+
+            {/* Banner */}
+            <div className="relative w-full h-40 bg-gray-100 rounded-xl overflow-hidden mb-6">
+              <Link to={`/store`}>
+                <img
+                  src={section.banner.img}
+                  alt={section.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                /></Link>
+              <div className="absolute top-4 left-4 text-white text-sm font-medium">
+                {section.banner.text.map((line, idx) => (
+                  <p key={idx}>{line}</p>
+                ))}
+              </div>
+            </div>
+
+            {/* Items */}
+            <div className="grid grid-cols-2 gap-4 text-center">
+              {section.items.map((item, itemIndex) => (
+                <div key={itemIndex} className="flex flex-col items-center">
+                  <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gray-100 mb-2">
+                    <Link to={`/store`}>
+                      <img
+                        src={item.img}
+                        alt={item.label}
+                        className="w-12 h-12 object-contain"
+                      /></Link>
+                  </div>
+                  <p className="text-sm font-medium text-gray-800">{item.label}</p>
+                  <p className="text-xs text-gray-500">{item.count}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
     </>
 
 

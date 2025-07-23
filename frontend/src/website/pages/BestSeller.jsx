@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { MainContext } from "../../Context";
+import { Link } from "react-router-dom";
 
 /**
  * BestSeller
@@ -98,17 +99,19 @@ const BestSeller = ({
                 </span>
               )}
 
-              
+
 
               {/* Image */}
-              <div className="w-full aspect-[4/5] overflow-hidden rounded-lg">
-                <img
-                  src={`${API_BASE_URL}/images/product/${product.thumbnail}`}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => (e.currentTarget.src = '/placeholder.png')}
-                />
-              </div>
+              <Link to={`/product/${product._id}`} state={{ product }}>
+                <div className="w-full aspect-[4/5] overflow-hidden rounded-lg">
+                  <img
+                    src={`${API_BASE_URL}/images/product/${product.thumbnail}`}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => (e.currentTarget.src = '/placeholder.png')}
+                  />
+                </div>
+              </Link>
 
 
 

@@ -31,6 +31,7 @@ import { lsUser } from './redux/slice/userSlice'
 import HomePage from './website/pages/Homeeee'
 import MyAddress from './website/pages/MyAddress'
 import ThankYou from './website/pages/ThankYou'
+import ShowProduct from './website/pages/ShowProduct'
 
 export default function App() {
   const dispatcher = useDispatch()
@@ -78,7 +79,12 @@ export default function App() {
         {
           path: "/thank-you/:orderId",
           element: <ThankYou />
+        },
+        {
+          path:"/product/:id",
+          element:<ShowProduct/>
         }
+        
       ]
     },
 

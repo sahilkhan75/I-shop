@@ -164,11 +164,13 @@ export default function Store() {
                                     </div>
 
                                     {/* Product Image */}
-                                    <img
-                                        src={`${API_BASE_URL}/images/product/${product.thumbnail}`}
-                                        alt="Product"
-                                        className="w-full object-cover rounded-lg mb-3"
-                                    />
+                                    <Link to={`/product/${product._id}`} state={{ product }}> 
+                                        <img
+                                            src={`${API_BASE_URL}/images/product/${product.thumbnail}`}
+                                            alt="Product"
+                                            className="w-full object-cover rounded-lg mb-3"
+                                        />
+                                    </Link>
 
                                     {/* Product Name */}
                                     <p className="text-sm sm:text-base text-gray-300 font-medium text-center">
