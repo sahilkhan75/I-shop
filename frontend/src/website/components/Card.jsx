@@ -114,7 +114,7 @@ const Card = () => {
     }, []
   )
 
-  console.log(Categories, "category from card ")
+  // console.log(Categories, "category from card ")
 
   async function carthandler(data) {
 
@@ -541,7 +541,6 @@ const Card = () => {
             <div
               key={idx}
               className="relative border rounded-lg p-4 shadow-sm hover:shadow-md transition bg-white"
-              img src={item.image} alt={item.title}
             >
               {item.tag && (
                 <span className="absolute top-2 left-2 bg-black text-white text-[10px] font-bold px-2 py-1 rounded">

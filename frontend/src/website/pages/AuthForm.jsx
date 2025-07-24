@@ -42,9 +42,12 @@ export default function AuthForm() {
       const res = await axios.post(`${API_BASE_URL}${USER_URL}/login`, { email, password });
       notify(res.data.msg, res.data.flag);
 
-      if (res.data.flag === 1) {
+      console.log(res.data, "loginres");
+
+      if (res.data.flag === 1 && res.data.user && res.data.token) {
         const userId = res.data.user._id;
-        dispatch(setUser({ user: res.data.user, userToken: res.data.token }));
+
+       await dispatch(setUser({ user: res.data.user, userToken: res.data.token }));
 
         const moveCartRes = await axios.post(`${API_BASE_URL}/cart/move-to-db`, {
           cart,
@@ -52,8 +55,8 @@ export default function AuthForm() {
         });
 
 
-        console.log(moveCartRes , "movecartes")
-             
+        console.log(moveCartRes, "movecartes")
+
 
         const updatedItems = moveCartRes.data.cart.map((item) => ({
           productId: item.product_id._id,
