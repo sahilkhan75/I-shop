@@ -55,9 +55,9 @@ const BestSeller = ({
           <button className="text-gray-500 hover:text-black text-sm">NEW IN</button>
           <button className="text-gray-500 hover:text-black text-sm">POPULAR</button>
         </div>
-        <a href="#" className="text-sm text-gray-600 hover:underline">
+        <Link to="/store" className="text-sm text-gray-600 hover:underline">
           View All
-        </a>
+        </Link>
       </div>
 
       {/* Grid */}

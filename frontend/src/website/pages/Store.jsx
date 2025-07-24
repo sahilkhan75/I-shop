@@ -84,7 +84,12 @@ export default function Store() {
 
     return (
         <>
-            <TopSells />
+            <BestSeller
+                products={products}
+                API_BASE_URL={API_BASE_URL}
+                formatCurrencyINR={formatCurrencyINR}
+                onAddToCart={carthandler}
+            />
             {/* <AllCategories /> */}
 
             <div className="bg-gray-100 p-6 rounded-xl shadow-xl text-white">
@@ -164,7 +169,7 @@ export default function Store() {
                                     </div>
 
                                     {/* Product Image */}
-                                    <Link to={`/product/${product._id}`} state={{ product }}> 
+                                    <Link to={`/product/${product._id}`} state={{ product }}>
                                         <img
                                             src={`${API_BASE_URL}/images/product/${product.thumbnail}`}
                                             alt="Product"
