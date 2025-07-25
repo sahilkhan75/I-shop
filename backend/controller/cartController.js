@@ -7,6 +7,8 @@ const cartController = {
         try {
             const { cart, user_id } = req.body;
 
+            // console.log(cart, "cart in move to db")
+
             if (Array.isArray(cart) && cart.length > 0) {
                 const allPromises = cart.map(async (item) => {
                     const { productId, qty } = item;
@@ -50,9 +52,9 @@ const cartController = {
 
 
 
-    async addToCart(req,res) {
-        try {   
-            console.log(req.body,"req.bodyyy")
+    async addToCart(req, res) {
+        try {
+            console.log(req.body, "req.bodyyy")
 
             const { userId, productId, qty } = req.body;
 
@@ -63,25 +65,25 @@ const cartController = {
 
             const existingItem = await CartModel.findOne({ user_id: userId, product_id: productId });
 
-            if(existingItem){
+            if (existingItem) {
                 await CartModel.updateOne(
-                    {_id:existingItem._id},
-                    {$inc:{qty:Number(qty)}}
+                    { _id: existingItem._id },
+                    { $inc: { qty: Number(qty) } }
                 );
-            }else{
+            } else {
                 const newItem = new CartModel({
-                    user_id:userId,
-                    product_id:productId,
-                    qty:Number(qty)
+                    user_id: userId,
+                    product_id: productId,
+                    qty: Number(qty)
                 });
                 await newItem.save();
             }
 
-            return res.send({msg:"cart updated successfully " , flag:1})
+            return res.send({ msg: "cart updated successfully ", flag: 1 })
 
         } catch (error) {
-         console.log(error)
-        res.send({msg:"internel server error" , flag:0})
+            console.log(error)
+            res.send({ msg: "internel server error", flag: 0 })
         }
 
 

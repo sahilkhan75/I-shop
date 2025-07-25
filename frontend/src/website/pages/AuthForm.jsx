@@ -47,7 +47,7 @@ export default function AuthForm() {
       if (res.data.flag === 1 && res.data.user && res.data.token) {
         const userId = res.data.user._id;
 
-       await dispatch(setUser({ user: res.data.user, userToken: res.data.token }));
+        await dispatch(setUser({ user: res.data.user, userToken: res.data.token }));
 
         const moveCartRes = await axios.post(`${API_BASE_URL}/cart/move-to-db`, {
           cart,
@@ -55,13 +55,15 @@ export default function AuthForm() {
         });
 
 
-        console.log(moveCartRes, "movecartes")
+        console.log(moveCartRes.data.cart, "movecartes")
 
 
         const updatedItems = moveCartRes.data.cart.map((item) => ({
           productId: item.product_id._id,
           qty: item.qty,
         }));
+
+
 
         const finalTotal = moveCartRes.data.cart.reduce(
           (acc, item) => acc + item.product_id.finalPrice * item.qty,

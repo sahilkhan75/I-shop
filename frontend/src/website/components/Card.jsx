@@ -18,6 +18,7 @@ import BannerSlider from "../pages/BannerSlider";
 
 
 
+
 const Card = () => {
 
   const { Categories, products, getProduct, API_BASE_URL, getCategory } = useContext(MainContext)
@@ -299,7 +300,9 @@ const Card = () => {
               <h3 className="text-2xl font-bold mb-2">REDMI NOTE 12 PRO+ 5G</h3>
               <p className="text-sm text-gray-600 mb-4">Rise to the challenge</p>
               <button className="bg-black text-white text-sm px-5 py-2 rounded hover:bg-gray-800">
-                SHOP NOW
+                <Link to={`/store/mobile-phones`}>
+                  SHOP NOW
+                </Link>
               </button>
             </div>
           </div>
@@ -307,19 +310,19 @@ const Card = () => {
           {/* Right Categories */}
           <div className="w-full lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 gap-6">
             {[
-              { img: "/img/ios.jpeg", label: "iPhone (iOS)", count: 74 },
-              { img: "/img/and.jpeg", label: "Android", count: 35 },
-              { img: "/img/note.jpeg", label: "5G Support", count: 12 },
-              { img: "/img/rog.jpeg", label: "Gaming", count: 9 },
-              { img: "/img/redmi.jpeg", label: "Xiaomi", count: 52 },
-              { img: "/img/acccc.jpeg", label: "Accessories", count: 29 },
+              { img: "/img/ios.jpeg",   link:"/store/mobile-phones",   label: "iPhone (iOS)", count: 74 },
+              { img: "/img/and.jpeg",   link:"/store/mobile-phones",   label: "Android", count: 35 },
+              { img: "/img/note.jpeg",  link:"/store/mobile-phones",   label: "5G Support", count: 12 },
+              { img: "/img/rog.jpeg",   link:"/store/mobile-phones",   label: "Gaming", count: 9 },
+              { img: "/img/redmi.jpeg", link:"/store/mobile-phones",   label: "Xiaomi", count: 52 },
+              { img: "/img/acccc.jpeg", link:"/store/mobile-phones",   label: "Accessories", count: 29 },
             ].map((cat, idx) => (
               <div
                 key={idx}
                 className="flex flex-col items-center text-center p-2 rounded-lg hover:shadow-lg transition"
               >
 
-                <Link to={"/store"}>
+                <Link to={cat.link}>
                   <img
                     src={cat.img}
                     alt={cat.label}
@@ -351,6 +354,7 @@ const Card = () => {
               availability: "In stock",
               rating: 152,
               image: "/ImagesForProducts/Cart-images/175d4e01c3ccc08552a7608516d07ff4f2593a4a.png",
+              link:"/store/mobile-phones",
             },
             {
               tag: "NEW",
@@ -359,7 +363,8 @@ const Card = () => {
               shipping: "$2.98 SHIPPING",
               availability: "In stock",
               rating: null,
-              image: "/ImagesForProducts/Cart-images/f7311fe8359d8e443a010f51a2a03878d38edca5.png"
+              image: "/ImagesForProducts/Cart-images/f7311fe8359d8e443a010f51a2a03878d38edca5.png",
+              link:"/store/mobile-phones",
             },
             {
               title: "OPod Pro 12.9 Inch M1 2023, 64GB + Wifi, GPS",
@@ -368,7 +373,8 @@ const Card = () => {
               gift: true,
               availability: "In stock",
               rating: 5,
-              image: "/ImagesForProducts/Cart-images/14b8f205d1206e84bc641d12f9f38aea82fc858f.png"
+              image: "/ImagesForProducts/Cart-images/14b8f205d1206e84bc641d12f9f38aea82fc858f.png",
+              link:"/store/mobile-phones"
             },
             {
               tag: "SAVE $59.00",
@@ -378,7 +384,8 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "Contact",
               rating: 9,
-              image: "/ImagesForProducts/Cart-images/e9716b3da8adab464285c71a3f34ecbb005d65b2.png"
+              image: "/ImagesForProducts/Cart-images/e9716b3da8adab464285c71a3f34ecbb005d65b2.png",
+              link:"/store/mobile-phones",
             },
             {
               title: "Microsute Alpha Ultra S5 Surface 128GB 2022, Sliver",
@@ -386,7 +393,8 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "Contact",
               rating: 8,
-              image: "/ImagesForProducts/Cart-images/42eb7d4d774278b9ccbcc9f8fbb93c2ef1a71ce1.png"
+              image: "/ImagesForProducts/Cart-images/42eb7d4d774278b9ccbcc9f8fbb93c2ef1a71ce1.png",
+              link:"/store/mobile-phones"
             },
           ].map((item, idx) => (
             <div
@@ -398,7 +406,7 @@ const Card = () => {
                   {item.tag}
                 </span>
               )}
-              <Link to={`/store`}>
+              <Link to={item.link}>
                 <img
                   src={item.image}
                   className="w-full h-40 object-contain rounded mb-2"
@@ -441,7 +449,7 @@ const Card = () => {
           {/* Left Hero Banner (large) */}
           <div className="relative lg:col-span-7 bg-[#1a1a1a] text-white rounded-lg overflow-hidden flex items-center px-6 py-8 min-h-[200px] sm:min-h-[240px] lg:min-h-[260px]">
             <div className="z-10 max-w-[60%]">
-              <Link to={"/store"} >   <h3 className="text-2xl sm:text-3xl font-bold mb-1 leading-tight">Mobok 2 Superchard</h3></Link>
+              <Link to={"/store/laptops"} >   <h3 className="text-2xl sm:text-3xl font-bold mb-1 leading-tight">Mobok 2 Superchard</h3></Link>
               <p className="text-sm text-gray-300 mb-3">By M2</p>
               <p className="text-sm">
                 Start from <span className="text-teal-400 font-semibold">$1,199</span>
@@ -459,12 +467,12 @@ const Card = () => {
           {/* Right Categories (small tiles) */}
           <div className="lg:col-span-5 grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 xl:grid-cols-3 gap-4 text-center">
             {[
-              { img: "/ImagesForProducts/Cart-images/m1.jpg", label: "Macbook", count: 74 },
-              { img: "/ImagesForProducts/Cart-images/gamingPC.jpg", label: "Gaming PC", count: 5 },
-              { img: "/ImagesForProducts/Cart-images/office LAP.jpg", label: "Laptop Office", count: 22 },
-              { img: "/ImagesForProducts/Cart-images/lap15.webp", label: 'Laptop 15"', count: 55 },
-              { img: "/ImagesForProducts/Cart-images/m1.jpg", label: "M1 2023", count: 32 },
-              { img: "/ImagesForProducts/Cart-images/second.avif", label: "Secondhand", count: 16 },
+              { img: "/ImagesForProducts/Cart-images/m1.jpg",         link:"/store/laptops",  label: "Macbook", count: 74 },
+              { img: "/ImagesForProducts/Cart-images/gamingPC.jpg",   link:"/store/pc-gaming",  label: "Gaming PC", count: 5 },
+              { img: "/ImagesForProducts/Cart-images/office LAP.jpg", link:"/store/laptops",  label: "Laptop Office", count: 22 },
+              { img: "/ImagesForProducts/Cart-images/lap15.webp",     link:"/store/laptops",  label: 'Laptop 15"', count: 55 },
+              { img: "/ImagesForProducts/Cart-images/m1.jpg",         link:"/store/laptops",  label: "M1 2023", count: 32 },
+              { img: "/ImagesForProducts/Cart-images/second.avif",    link:"/store/laptops",  label: "Dell", count: 16 },
             ].map((cat, idx) => (
               <button
                 key={idx}
@@ -472,7 +480,7 @@ const Card = () => {
                 className="group flex flex-col items-center gap-2 p-2 rounded-md hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
               >
 
-                <Link to={`/store`}>
+                <Link to={cat.link}>
                   <img
                     src={cat.img}
                     alt={cat.label}
@@ -604,10 +612,10 @@ const Card = () => {
               text: ["WIRELESS", "RGB GAMING", "MOUSE"],
             },
             items: [
-              { img: "/ImagesForProducts/Cart-images/acfba31f3e9bc9ce9e19f94c6e0c402318990d1d.png", label: "Monitors", count: "28 Items" },
-              { img: "/ImagesForProducts/Cart-images/31651446aaa6aab207aec9c7d7fe95814319fe78.png", label: "Chair", count: "12 Items" },
-              { img: "/ImagesForProducts/Cart-images/dfb212b7a85d4fcbcd6180225b20a06e86e18273.png", label: "Controller", count: "9 Items" },
-              { img: "/ImagesForProducts/Cart-images/42bd867aafc85b2c1dba35d552d8d174e8c124b1.png", label: "Keyboards", count: "30 Items" },
+              { img: "/ImagesForProducts/Cart-images/acfba31f3e9bc9ce9e19f94c6e0c402318990d1d.png", link: "/store/monitors", label: "Monitors", count: "28 Items" },
+              { img: "/ImagesForProducts/Cart-images/31651446aaa6aab207aec9c7d7fe95814319fe78.png", link: "/store/office-chair", label: "Chair", count: "12 Items" },
+              { img: "/ImagesForProducts/Cart-images/dfb212b7a85d4fcbcd6180225b20a06e86e18273.png", link: "/store/office-chair", label: "Controller", count: "9 Items" },
+              { img: "/ImagesForProducts/Cart-images/42bd867aafc85b2c1dba35d552d8d174e8c124b1.png", link: "/store/office-chair", label: "Keyboards", count: "30 Items" },
             ],
           },
           {
@@ -651,7 +659,7 @@ const Card = () => {
               {section.items.map((item, itemIndex) => (
                 <div key={itemIndex} className="flex flex-col items-center">
                   <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gray-100 mb-2">
-                    <Link to={`/store`}>
+                    <Link to={item.link}>
                       <img
                         src={item.img}
                         alt={item.label}
