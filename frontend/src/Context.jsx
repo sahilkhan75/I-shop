@@ -14,7 +14,7 @@ function Context(props) {
     const COLOR_URL = "/color"
     const PRODUCT_URL = "/product"
     const ADMIN_URL = "/admin"
-    const USER_URL = "/user"    
+    const USER_URL = "/user"
 
     const notify = (msg, flag) => toast(msg, { type: flag ? "success" : "error" });
 
@@ -81,38 +81,35 @@ function Context(props) {
     }
 
 
-    function getProduct(id = null, limit = 0, categorySlug = null, colorSlug = null) {
-        // console.log(limit, "limit");
+    function getProduct(id = null, limit = 0, categorySlug = null, colorSlug = null, minPrice = 0, maxPrice = 100000) {
+        console.log(limit, "limit");
 
-        let URL = API_BASE_URL + PRODUCT_URL
-        //http://localhost:5000/category/id
+        let URL = API_BASE_URL + PRODUCT_URL;
+
         if (id != null) {
-            URL = URL + `/${id}`
-
+            URL += `/${id}`;
         }
+
         const query = new URLSearchParams();
 
-        query.append(limit, 'limit')
-        if (categorySlug) {
-            query.append("categorySlug", categorySlug)
-        }
-        if (colorSlug) {
-            query.append("colorSlug", colorSlug)
-        }
+        query.append("limit", limit);
+        if (categorySlug) query.append("categorySlug", categorySlug);
+        if (colorSlug) query.append("colorSlug", colorSlug);
+        if (minPrice) query.append("minPrice", minPrice);
+        if (maxPrice) query.append("maxPrice", maxPrice);
 
-        axios.get(URL + "?" + query).then(
-            (response) => {
+        axios.get(URL + "?" + query.toString())
+            .then((response) => {
                 if (response.data.flag === 1) {
-                    setProducts(response.data.products)
+                    setProducts(response.data.products);
                 }
-
-            }
-        ).catch(
-            (error) => {
-                setProducts([])
-            }
-        )
+            })
+            .catch((error) => {
+                console.error("Fetch error:", error);
+                setProducts([]);
+            });
     }
+
 
 
 

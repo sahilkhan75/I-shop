@@ -8,7 +8,7 @@ import { MainContext } from "../../Context";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { addItem } from "../../redux/slice/cartSlice";
-import { image } from "framer-motion/client";
+import { image, link } from "framer-motion/client";
 import { Link } from "react-router-dom";
 import DealsOfTheDay from "../pages/DealsOfTheDay";
 import TopCategories from "../pages/TopCategories";
@@ -310,12 +310,12 @@ const Card = () => {
           {/* Right Categories */}
           <div className="w-full lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 gap-6">
             {[
-              { img: "/img/ios.jpeg",   link:"/store/mobile-phones",   label: "iPhone (iOS)", count: 74 },
-              { img: "/img/and.jpeg",   link:"/store/mobile-phones",   label: "Android", count: 35 },
-              { img: "/img/note.jpeg",  link:"/store/mobile-phones",   label: "5G Support", count: 12 },
-              { img: "/img/rog.jpeg",   link:"/store/mobile-phones",   label: "Gaming", count: 9 },
-              { img: "/img/redmi.jpeg", link:"/store/mobile-phones",   label: "Xiaomi", count: 52 },
-              { img: "/img/acccc.jpeg", link:"/store/mobile-phones",   label: "Accessories", count: 29 },
+              { img: "/img/ios.jpeg", link: "/store/mobile-phones", label: "iPhone (iOS)", count: 74 },
+              { img: "/img/and.jpeg", link: "/store/mobile-phones", label: "Android", count: 35 },
+              { img: "/img/note.jpeg", link: "/store/mobile-phones", label: "5G Support", count: 12 },
+              { img: "/img/rog.jpeg", link: "/store/mobile-phones", label: "Gaming", count: 9 },
+              { img: "/img/redmi.jpeg", link: "/store/mobile-phones", label: "Xiaomi", count: 52 },
+              { img: "/img/acccc.jpeg", link: "/store/mobile-phones", label: "Accessories", count: 29 },
             ].map((cat, idx) => (
               <div
                 key={idx}
@@ -354,7 +354,7 @@ const Card = () => {
               availability: "In stock",
               rating: 152,
               image: "/ImagesForProducts/Cart-images/175d4e01c3ccc08552a7608516d07ff4f2593a4a.png",
-              link:"/store/mobile-phones",
+              link: "/store/mobile-phones",
             },
             {
               tag: "NEW",
@@ -364,7 +364,7 @@ const Card = () => {
               availability: "In stock",
               rating: null,
               image: "/ImagesForProducts/Cart-images/f7311fe8359d8e443a010f51a2a03878d38edca5.png",
-              link:"/store/mobile-phones",
+              link: "/store/mobile-phones",
             },
             {
               title: "OPod Pro 12.9 Inch M1 2023, 64GB + Wifi, GPS",
@@ -374,7 +374,7 @@ const Card = () => {
               availability: "In stock",
               rating: 5,
               image: "/ImagesForProducts/Cart-images/14b8f205d1206e84bc641d12f9f38aea82fc858f.png",
-              link:"/store/mobile-phones"
+              link: "/store/mobile-phones"
             },
             {
               tag: "SAVE $59.00",
@@ -385,7 +385,7 @@ const Card = () => {
               availability: "Contact",
               rating: 9,
               image: "/ImagesForProducts/Cart-images/e9716b3da8adab464285c71a3f34ecbb005d65b2.png",
-              link:"/store/mobile-phones",
+              link: "/store/mobile-phones",
             },
             {
               title: "Microsute Alpha Ultra S5 Surface 128GB 2022, Sliver",
@@ -394,7 +394,7 @@ const Card = () => {
               availability: "Contact",
               rating: 8,
               image: "/ImagesForProducts/Cart-images/42eb7d4d774278b9ccbcc9f8fbb93c2ef1a71ce1.png",
-              link:"/store/mobile-phones"
+              link: "/store/mobile-phones"
             },
           ].map((item, idx) => (
             <div
@@ -467,12 +467,12 @@ const Card = () => {
           {/* Right Categories (small tiles) */}
           <div className="lg:col-span-5 grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 xl:grid-cols-3 gap-4 text-center">
             {[
-              { img: "/ImagesForProducts/Cart-images/m1.jpg",         link:"/store/laptops",  label: "Macbook", count: 74 },
-              { img: "/ImagesForProducts/Cart-images/gamingPC.jpg",   link:"/store/pc-gaming",  label: "Gaming PC", count: 5 },
-              { img: "/ImagesForProducts/Cart-images/office LAP.jpg", link:"/store/laptops",  label: "Laptop Office", count: 22 },
-              { img: "/ImagesForProducts/Cart-images/lap15.webp",     link:"/store/laptops",  label: 'Laptop 15"', count: 55 },
-              { img: "/ImagesForProducts/Cart-images/m1.jpg",         link:"/store/laptops",  label: "M1 2023", count: 32 },
-              { img: "/ImagesForProducts/Cart-images/second.avif",    link:"/store/laptops",  label: "Dell", count: 16 },
+              { img: "/ImagesForProducts/Cart-images/m1.jpg", link: "/store/laptops", label: "Macbook", count: 74 },
+              { img: "/ImagesForProducts/Cart-images/gamingPC.jpg", link: "/store/pc-gaming", label: "Gaming PC", count: 5 },
+              { img: "/ImagesForProducts/Cart-images/office LAP.jpg", link: "/store/laptops", label: "Laptop Office", count: 22 },
+              { img: "/ImagesForProducts/Cart-images/lap15.webp", link: "/store/laptops", label: 'Laptop 15"', count: 55 },
+              { img: "/ImagesForProducts/Cart-images/m1.jpg", link: "/store/laptops", label: "M1 2023", count: 32 },
+              { img: "/ImagesForProducts/Cart-images/second.avif", link: "/store/laptops", label: "Dell", count: 16 },
             ].map((cat, idx) => (
               <button
                 key={idx}
@@ -507,7 +507,8 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "In stock",
               rating: 152,
-              image: "/ImagesForProducts/Cart-images/1ca36b05619c3f1e50a7b8603401775a7325fdd4.png"
+              image: "/ImagesForProducts/Cart-images/1ca36b05619c3f1e50a7b8603401775a7325fdd4.png",
+              link: "/store/laptops"
             },
             {
               tag: "NEW",
@@ -516,7 +517,8 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "In stock",
               rating: null,
-              image: "/ImagesForProducts/Cart-images/f6f60ea46d8b07cf6ff73a6f143dfc4f482a31b6.png"
+              image: "/ImagesForProducts/Cart-images/f6f60ea46d8b07cf6ff73a6f143dfc4f482a31b6.png",
+              link: "/store/speaker"
             },
             {
               title: "Gigaby Custome Case, i7/16GB / SSD 256GB",
@@ -525,7 +527,8 @@ const Card = () => {
               gift: true,
               availability: "In stock",
               rating: 5,
-              image: "/ImagesForProducts/Cart-images/484cfdfeca6774b75a0daedd905036de4f454488.png"
+              image: "/ImagesForProducts/Cart-images/484cfdfeca6774b75a0daedd905036de4f454488.png",
+              link: "/store/pc-gaming"
             },
             {
               tag: "SAVE $59.00",
@@ -535,7 +538,8 @@ const Card = () => {
               shipping: "$2.98 SHIPPING",
               availability: "Contact",
               rating: 9,
-              image: "/ImagesForProducts/Cart-images/b1b7613bb7ed916ace8b8f83d9ecfac26661212b.png"
+              image: "/ImagesForProducts/Cart-images/b1b7613bb7ed916ace8b8f83d9ecfac26661212b.png",
+              link: "/store/pc-gaming"
             },
             {
               title: "aMoc All-in-one Computer M1",
@@ -543,7 +547,8 @@ const Card = () => {
               shipping: "FREE SHIPPING",
               availability: "Contact",
               rating: 8,
-              image: "/ImagesForProducts/Cart-images/d7ac633809c95a64f35f896871461791156d9aba.png"
+              image: "/ImagesForProducts/Cart-images/d7ac633809c95a64f35f896871461791156d9aba.png",
+              link: "/store/monitors"
             },
           ].map((item, idx) => (
             <div
@@ -556,7 +561,7 @@ const Card = () => {
                 </span>
               )}
 
-              <Link to={`/store`}>
+              <Link to={item.link}>
                 <img
                   src={item.image}
                   className="w-full h-40 object-contain rounded mb-2"
@@ -597,12 +602,13 @@ const Card = () => {
             banner: {
               img: "/ImagesForProducts/Cart-images/4287fa38c8d866bc89c60a6964f589b77b86f480.png",
               text: ["Best", "Speaker", "2023"],
+              link: "/store/speaker"
             },
             items: [
-              { img: "/ImagesForProducts/Cart-images/32939a222a454356a0625debba6a324beee40795.png", label: "Speaker", count: "12 Items" },
-              { img: "/ImagesForProducts/Cart-images/fa3375f7764418cbe883d52926f078882a6a6b82.png", label: "DSLR Camera", count: "9 Items" },
-              { img: "/ImagesForProducts/Cart-images/82ce93988259871b60be5c8a191a8a02a08350e9.png", label: "Earbuds", count: "5 Items" },
-              { img: "/ImagesForProducts/Cart-images/c13645cc801cede6ea02c11d48dc37d65ac98e0f.png", label: "Microphone", count: "12 Items" },
+              { img: "/ImagesForProducts/Cart-images/32939a222a454356a0625debba6a324beee40795.png", link: "/store/speaker", label: "Speaker", count: "12 Items" },
+              { img: "/ImagesForProducts/Cart-images/fa3375f7764418cbe883d52926f078882a6a6b82.png", link: "/store/camera", label: "DSLR Camera", count: "9 Items" },
+              { img: "/ImagesForProducts/Cart-images/82ce93988259871b60be5c8a191a8a02a08350e9.png", link: "/store/ear-buds", label: "Earbuds", count: "5 Items" },
+              { img: "/ImagesForProducts/Cart-images/c13645cc801cede6ea02c11d48dc37d65ac98e0f.png", link: "/store/microphone", label: "Microphone", count: "12 Items" },
             ],
           },
           {
@@ -614,8 +620,8 @@ const Card = () => {
             items: [
               { img: "/ImagesForProducts/Cart-images/acfba31f3e9bc9ce9e19f94c6e0c402318990d1d.png", link: "/store/monitors", label: "Monitors", count: "28 Items" },
               { img: "/ImagesForProducts/Cart-images/31651446aaa6aab207aec9c7d7fe95814319fe78.png", link: "/store/office-chair", label: "Chair", count: "12 Items" },
-              { img: "/ImagesForProducts/Cart-images/dfb212b7a85d4fcbcd6180225b20a06e86e18273.png", link: "/store/office-chair", label: "Controller", count: "9 Items" },
-              { img: "/ImagesForProducts/Cart-images/42bd867aafc85b2c1dba35d552d8d174e8c124b1.png", link: "/store/office-chair", label: "Keyboards", count: "30 Items" },
+              { img: "/ImagesForProducts/contoller.webp", link: "/store/office-chair", label: "Controller", count: "9 Items" },
+              { img: "/ImagesForProducts/keybord.jpg", link: "/store/office-chair", label: "Keyboards", count: "30 Items" },
             ],
           },
           {
@@ -625,10 +631,10 @@ const Card = () => {
               text: ["Home Thearther 4k", "Laser Projector"],
             },
             items: [
-              { img: "/ImagesForProducts/Cart-images/5992d4b46a1b70b35e3f9ba5c1921e89b1964e3a.png", label: "Printers", count: "9 Items" },
-              { img: "/ImagesForProducts/Cart-images/b7a0be7cf4d5d0244b2911fc339a38637e6373dd.png", label: "Network", count: "90 Items" },
-              { img: "/ImagesForProducts/Cart-images/f687da0c261bd55568958d470f44c37d86165564.png", label: "Security", count: "12 Items" },
-              { img: "/ImagesForProducts/Cart-images/83352eb322a7a6a60cacac49d5106da4bc433aaf.png", label: "Projectors", count: "12 Items" },
+              { img: "/ImagesForProducts/Printer.png", link: "/store/printer", label: "Printers", count: "9 Items" },
+              { img: "/ImagesForProducts/wifi.jpg", link: "/store/wifi", label: "Network", count: "90 Items" },
+              { img: "/ImagesForProducts/camera.jpg", link: "/store/camera", label: "Security", count: "12 Items" },
+              { img: "/ImagesForProducts/projector.png", link: "/store/projector", label: "Projectors", count: "12 Items" },
             ],
           },
         ].map((section, sectionIndex) => (
@@ -643,8 +649,8 @@ const Card = () => {
             <div className="relative w-full h-40 bg-gray-100 rounded-xl overflow-hidden mb-6">
               <Link to={`/store`}>
                 <img
-                  src={section.banner.img}
                   alt={section.title}
+                  src={section.banner.img}
                   className="absolute inset-0 w-full h-full object-cover"
                 /></Link>
               <div className="absolute top-4 left-4 text-white text-sm font-medium">

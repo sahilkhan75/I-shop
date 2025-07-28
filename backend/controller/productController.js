@@ -57,6 +57,9 @@ const productController = {
     async getdata(req, res) {
         try {
             const id = req.params.id;
+
+            console.log("Query Params:", req.query);
+
             // let products = null;
             const filterQuery = {};
             if (req.query.categorySlug) {

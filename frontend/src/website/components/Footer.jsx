@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { FaTwitter, FaFacebook, FaInstagram, FaYoutube, FaPinterest } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -37,15 +38,17 @@ const Footer = () => {
         <div>
           <h3 className="text-sm font-bold mb-3">TOP CATEGORIES</h3>
           <ul className="space-y-2 text-sm text-white">
-            <li>Laptops</li>
-            <li>PC & Computers</li>
-            <li>Cell Phones</li>
-            <li>Tablets</li>
-            <li>Gaming & VR</li>
-            <li>Networks</li>
-            <li>Cameras</li>
-            <li>Sounds</li>
-            <li>Office</li>
+            <Link to="/store/laptops">
+              <li>Laptops</li>
+            </Link>
+            <Link to="/store/monitors"><li>PC & Computers</li></Link>
+            <Link to="/store/mobile-phones"><li>Cell Phones</li></Link>
+            <Link to="/store/tablet"><li>Tablets</li></Link>
+            <Link to="/store/pc-gaming"><li>Gaming & VR</li></Link>
+            <Link to="/store/wifi"><li>Networks</li></Link>
+            <Link to="/store/camera"><li>Cameras</li></Link>
+            <Link to="/store/speaker"><li>Sounds</li> </Link>
+            <Link to="/store/head-phone"><li>Head phone</li> </Link>
           </ul>
         </div>
 

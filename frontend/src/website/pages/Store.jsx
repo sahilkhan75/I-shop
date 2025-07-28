@@ -19,6 +19,8 @@ export default function Store() {
     const [limit, setLimit] = useState(0)
     const [colorSlug, setColorSlug] = useState();
     const [searchParams, setSearchParams] = useSearchParams()
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState(100000)
     const { getProduct, products, getCategory, Categories,
         COLOR_URL, getColors, colors, API_BASE_URL } = useContext(MainContext)
 
@@ -41,20 +43,18 @@ export default function Store() {
         []
     )
 
-    useEffect(
-        () => {
-            const query = {};
-            if (limit) {
-                query.limit = limit;
-            }
-            if (colorSlug) {
-                query.colorSlug = colorSlug;
-            }
-            setSearchParams(query)
-            getProduct(null, limit, categorySlug, colorSlug)
-        },
-        [limit, categorySlug, colorSlug]
-    )
+    useEffect(() => {
+        const query = {};
+
+        if (limit) query.limit = limit;
+        if (colorSlug) query.colorSlug = colorSlug;
+        if (minPrice) query.minPrice = minPrice;
+        if (maxPrice) query.maxPrice = maxPrice;
+
+        setSearchParams(query);
+        getProduct(null, limit, categorySlug, colorSlug, minPrice, maxPrice);
+    }, [limit, categorySlug, colorSlug, minPrice, maxPrice]);
+
 
 
     async function carthandler(data) {
@@ -131,7 +131,32 @@ export default function Store() {
                                 ))}
                             </div>
                         </div>
+
+
+                        {/* Price Filter */}
+                        <div className="my-6">
+                            <h4 className="font-semibold text-yellow-400 mb-2 tracking-wide">BY PRICE</h4>
+                            <div className="flex items-center gap-2 text-sm mb-2">
+                                <input
+                                    type="number"
+                                    value={minPrice}
+                                    onChange={(e) => setMinPrice(Number(e.target.value))}
+                                    className="w-1/2 px-2 py-1 rounded border border-gray-300 text-black"
+                                    placeholder="Min"
+                                />
+                                <span className="text-gray-600">—</span>
+                                <input
+                                    type="number"
+                                    value={maxPrice}
+                                    onChange={(e) => setMaxPrice(Number(e.target.value))}
+                                    className="w-1/2 px-2 py-1 rounded border border-gray-300 text-black"
+                                    placeholder="Max"
+                                />
+                            </div>
+                        </div>
+
                     </div>
+
 
                     {/* Products Section */}
                     <div className="col-span-5 p-4 bg-white text-white rounded-xl shadow-lg">
@@ -141,7 +166,7 @@ export default function Store() {
                             className="border  rounded-lg px-6 py-2 text-sm text-black focus:ring-2 focus:ring-black transition-all duration-300 mb-6"
                         >
                             <option value="0">All</option>
-                            <option value="2">2</option>
+                            <option value="10">10</option>
                             <option value="20">20</option>
                             <option value="24">24</option>
                         </select>
@@ -173,7 +198,7 @@ export default function Store() {
                                         <img
                                             src={`${API_BASE_URL}/images/product/${product.thumbnail}`}
                                             alt="Product"
-                                            className="w-full object-cover rounded-lg mb-3"
+                                            className="w-full h-48 sm:h-52 md:h-56 lg:h-60 object-cover rounded-lg mb-3"
                                         />
                                     </Link>
 
