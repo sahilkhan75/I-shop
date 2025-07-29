@@ -29,7 +29,7 @@ const Header = () => {
     dispatch(emptycart())
   }
 
-    const formatCurrencyINR = (amount) => {
+  const formatCurrencyINR = (amount) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
@@ -68,7 +68,9 @@ const Header = () => {
           <Link to={"/ghar"}>
             <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">ABOUT</motion.div>
           </Link>
-          <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">CONTACT</motion.div>
+          <Link to={"/contact"}>
+            <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">CONTACT</motion.div>
+          </Link>
           <Link to={"/store"}>
             <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">STORE</motion.div>
           </Link>

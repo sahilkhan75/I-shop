@@ -10,13 +10,15 @@ import { Link, useSearchParams, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { addItem } from '../../redux/slice/cartSlice';
 import axios from 'axios';
+import PopularCategories from './PopularCategories';
+import TopCellPhones from './TopCellPhones';
 // import { hex } from 'framer-motion';
 export default function Store() {
     const user = useSelector((state) => state.user?.data)
     const dispacher = useDispatch()
     const { categorySlug } = useParams();
     // console.log(categorySlug);
-    const [limit, setLimit] = useState(0)
+    const [limit, setLimit] = useState(12)
     const [colorSlug, setColorSlug] = useState();
     const [searchParams, setSearchParams] = useSearchParams()
     const [minPrice, setMinPrice] = useState(0)
@@ -45,6 +47,8 @@ export default function Store() {
 
     useEffect(() => {
         const query = {};
+
+        console.log("minPrice:", minPrice, "maxPrice:", maxPrice); // Should be numbers
 
         if (limit) query.limit = limit;
         if (colorSlug) query.colorSlug = colorSlug;
@@ -84,6 +88,10 @@ export default function Store() {
 
     return (
         <>
+
+            <TopCellPhones />
+            <PopularCategories />
+
             <BestSeller
                 products={products}
                 API_BASE_URL={API_BASE_URL}
@@ -118,7 +126,7 @@ export default function Store() {
                         </ul>
 
                         {/* Color Filter */}
-                        <div className="my-10">
+                        <div className="my-10 border-t border-gray-300 pt-4">
                             <h4 className="font-semibold text-yellow-400 mb-2 tracking-wide">BY COLOR</h4>
                             <div className="flex flex-wrap  gap-2">
                                 {colors.map((color, index) => (
@@ -134,7 +142,7 @@ export default function Store() {
 
 
                         {/* Price Filter */}
-                        <div className="my-6">
+                        <div className="my-6 border-t border-gray-300 pt-4">
                             <h4 className="font-semibold text-yellow-400 mb-2 tracking-wide">BY PRICE</h4>
                             <div className="flex items-center gap-2 text-sm mb-2">
                                 <input
@@ -155,6 +163,24 @@ export default function Store() {
                             </div>
                         </div>
 
+
+                        {/* Promo Image Section */}
+                        <div
+                            className="relative mt-50 rounded-xl overflow-hidden h-40 shadow-lg "
+                            style={{
+                                backgroundImage: "url('/ImagesForProducts/addimg.png.png')", // replace with your image path
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                            }}
+                        >
+                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-center px-4">
+                                <h4 className="text-white font-semibold text-sm leading-tight">
+                                    Capture Your Adventures<br />with GoPro Hero 11
+                                </h4>
+                            </div>
+                        </div>
+
+
                     </div>
 
 
@@ -165,10 +191,11 @@ export default function Store() {
                             onChange={(e) => setLimit(e.target.value)}
                             className="border  rounded-lg px-6 py-2 text-sm text-black focus:ring-2 focus:ring-black transition-all duration-300 mb-6"
                         >
-                            <option value="0">All</option>
-                            <option value="10">10</option>
+                            <option value="12">12</option>
+                            <option value="16">16</option>
                             <option value="20">20</option>
                             <option value="24">24</option>
+                            <option value="0">All</option>
                         </select>
 
                         {/* Pagination Buttons */}
@@ -186,60 +213,72 @@ export default function Store() {
                             {products.map((product, index) => (
                                 <div
                                     key={index}
-                                    className=" border rounded-2xl p-4 hover:scale-[1.03] transform transition duration-300 shadow-xl hover:shadow-[0_0_15px_#facc15] relative"
+                                    className="relative border rounded-xl p-4 bg-white hover:shadow-xl transition-all duration-300"
                                 >
-                                    {/* Product ID Badge */}
-                                    <div className="absolute top-2 right-2 bg-gray-200 text-[10px] sm:text-xs text-black px-2 py-1 rounded shadow">
-                                        {index + 1}
+                                    {/* SAVE Badge */}
+                                    <div className="absolute top-2 left-2 bg-green-500 text-white text-[11px] font-semibold px-2 py-1 rounded shadow">
+                                        SAVE ₹{product.originalPrice - product.finalPrice}
                                     </div>
+
+                                    {/* Product ID circle top-right */}
+                                    <div className="absolute top-2 right-2 w-4 h-4 bg-gray-200 rounded-full shadow-md"></div>
 
                                     {/* Product Image */}
                                     <Link to={`/product/${product._id}`} state={{ product }}>
                                         <img
                                             src={`${API_BASE_URL}/images/product/${product.thumbnail}`}
                                             alt="Product"
-                                            className="w-full h-48 sm:h-52 md:h-56 lg:h-60 object-cover rounded-lg mb-3"
+                                            className="w-full h-48 object-contain mb-3"
                                         />
                                     </Link>
 
-                                    {/* Product Name */}
-                                    <p className="text-sm sm:text-base text-gray-300 font-medium text-center">
+                                    {/* Product name */}
+                                    <p className="text-center text-sm text-gray-800 font-medium">
                                         {product.name}
                                     </p>
 
-                                    {/* Price */}
-                                    <p className="text-center font-bold text-base sm:text-lg mt-1">
-                                        <span className="text-yellow-400">{formatCurrencyINR(product.finalPrice)}</span>{" "}
-                                        <span className="text-gray-500 line-through ml-2">{formatCurrencyINR(product.originalPrice)}</span>
-                                    </p>
-                                    {/* {
-                                        console.log(product.finalPrice)
+                                    {/* Price section */}
+                                    <div className="text-center mt-2">
+                                        <p className="text-red-600 text-lg font-bold">
+                                            {formatCurrencyINR(product.finalPrice)}
+                                        </p>
+                                        <p className="text-gray-500 text-sm line-through">
+                                            {formatCurrencyINR(product.originalPrice)}
+                                        </p>
+                                    </div>
 
-                                    } */}
-                                    {/* Free Shipping */}
-                                    <button className="text-xs sm:text-sm text-green-400 font-semibold text-center mt-1">
-                                        FREE SHIPPING
-                                    </button>
+                                    {/* Shipping info */}
+                                    <div className="mt-1 text-center">
+                                        {product.finalPrice > 500 ? (
+                                            <span className="bg-green-500 text-white text-xs px-2 py-1 rounded font-semibold">
+                                                FREE SHIPPING
+                                            </span>
+                                        ) : (
+                                            <span className="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded font-semibold">
+                                                ₹39 SHIPPING
+                                            </span>
+                                        )}
+                                    </div>
 
-                                    {/* Stock */}
-                                    <p className="text-sm text-red-400 text-center mt-1">
-                                        {product.stock}
-                                    </p>
+                                    {/* Stock or availability */}
+                                    <p className="text-center text-xs text-red-500 mt-1">{product.stock}</p>
 
-                                    {/* Add to Cart Button */}
+                                    {/* Add to Cart */}
                                     <button
-                                        onClick={() => {
+                                        onClick={() =>
                                             carthandler({
                                                 productId: product._id,
                                                 finalPrice: product.finalPrice,
                                                 originalPrice: product.originalPrice,
                                             })
-                                        }}
-                                        className="mt-4 w-full bg-white hover:bg-gradient-to-r from-white to-yellow-700 hover:text-black transition transform hover:scale-105 text-black font-semibold text-sm sm:text-base py-2 rounded-lg shadow-md"
+                                        }
+                                        className="mt-4 w-full bg-gray-500 hover:bg-gray-700 text-white
+                                                  text-sm font-semibold py-2 rounded-lg transition-all duration-200"
                                     >
                                         Add to Cart
                                     </button>
                                 </div>
+
                             ))}
                         </div>
 

@@ -32,6 +32,7 @@ import HomePage from './website/pages/Homeeee'
 import MyAddress from './website/pages/MyAddress'
 import ThankYou from './website/pages/ThankYou'
 import ShowProduct from './website/pages/ShowProduct'
+import Contact from './website/pages/Contact'
 
 export default function App() {
   const dispatcher = useDispatch()
@@ -83,6 +84,10 @@ export default function App() {
         {
           path:"/product/:id",
           element:<ShowProduct/>
+        },
+        {
+          path:"/contact",
+          element:<Contact/>
         }
         
       ]

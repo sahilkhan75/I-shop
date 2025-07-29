@@ -58,23 +58,34 @@ const productController = {
         try {
             const id = req.params.id;
 
-            console.log("Query Params:", req.query);
+            console.log("Query Params:", req.query.minPrice);
 
             // let products = null;
             const filterQuery = {};
             if (req.query.categorySlug) {
-                // console.log(req.query.categorySlug);
-                const category = await categoryModel.findOne({ slug: req.query.categorySlug })
-                console.log(category._id);
-                filterQuery.categoryId = category._id
-                // console.log(categoryId);
-                if (req.query.colorSlug) {
-                    const color = await colorModel.findOne({ slug: req.query.colorSlug })
-                    filterQuery.colors = { $in: [color._id] };
-
+                const category = await categoryModel.findOne({ slug: req.query.categorySlug });
+                if (category) {
+                    filterQuery.categoryId = category._id;
                 }
 
+                if (req.query.colorSlug) {
+                    const color = await colorModel.findOne({ slug: req.query.colorSlug });
+                    if (color) {
+                        filterQuery.colors = { $in: [color._id] };
+                    }
+                }
             }
+
+            if (req.query.minPrice && req.query.maxPrice) {
+                const minPrice = parseFloat(req.query.minPrice) || 0;
+                const maxPrice = parseFloat(req.query.maxPrice) || 100000;
+                filterQuery.originalPrice = { $gte: minPrice, $lte: maxPrice };
+
+
+            }
+
+
+
             console.log(filterQuery);
             // console.log(req.query), "asad"
 
