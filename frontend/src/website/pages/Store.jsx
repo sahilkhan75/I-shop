@@ -23,6 +23,7 @@ export default function Store() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [minPrice, setMinPrice] = useState(0)
     const [maxPrice, setMaxPrice] = useState(100000)
+    const [showMobileFilter, setShowMobileFilter] = useState(false);
     const { getProduct, products, getCategory, Categories,
         COLOR_URL, getColors, colors, API_BASE_URL } = useContext(MainContext)
 
@@ -104,7 +105,7 @@ export default function Store() {
                 <h2 className="text-lg font-bold mb-6 text-yellow-400 tracking-wide">BEST SELLER IN THIS CATEGORY</h2>
                 <div className="grid grid-cols-6 gap-4">
                     {/* Sidebar */}
-                    <div className="col-span-1 bg-gray-200 text-white p-4 rounded-xl shadow-lg">
+                    <div className="hidden md:block col-span-1 bg-gray-200 text-white p-4 rounded-xl shadow-lg">
                         <h3 className="font-semibold text-yellow-400 mb-4 tracking-wide">CATEGORIES</h3>
 
                         {/* All Categories Button */}
@@ -186,17 +187,29 @@ export default function Store() {
 
                     {/* Products Section */}
                     <div className="col-span-5 p-4 bg-white text-white rounded-xl shadow-lg">
+
                         {/* Limit Selector */}
-                        <select
-                            onChange={(e) => setLimit(e.target.value)}
-                            className="border  rounded-lg px-6 py-2 text-sm text-black focus:ring-2 focus:ring-black transition-all duration-300 mb-6"
-                        >
-                            <option value="12">12</option>
-                            <option value="16">16</option>
-                            <option value="20">20</option>
-                            <option value="24">24</option>
-                            <option value="0">All</option>
-                        </select>
+                        {/* Mobile Filter Button */}
+                        <div className="md:hidden flex justify-between items-center mb-4 px-4">
+                            <button
+                                onClick={() => setShowMobileFilter(true)}
+                                className="bg-gray-800 text-white text-sm px-4 py-2 rounded-lg shadow"
+                            >
+                                Filter Products
+                            </button>
+
+                            <select
+                                onChange={(e) => setLimit(e.target.value)}
+                                className="border rounded-lg px-4 py-2 text-sm text-black"
+                            >
+                                <option value="12">12</option>
+                                <option value="16">16</option>
+                                <option value="20">20</option>
+                                <option value="24">24</option>
+                                <option value="0">All</option>
+                            </select>
+                        </div>
+
 
                         {/* Pagination Buttons */}
                         {/* <div className="flex justify-between items-center mb-6">
