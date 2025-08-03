@@ -41,7 +41,7 @@ export default function MyAddress() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/user/add-address", {
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/user/add-address`, {
         user_id: user._id,
         shipping_address: address,
       });

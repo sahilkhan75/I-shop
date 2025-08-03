@@ -9,7 +9,7 @@ function Context(props) {
     const [Categories, setCategories] = useState([]);
     const [colors, setColors] = useState([]);
     const [products, setProducts] = useState([]);
-    const API_BASE_URL = "http://localhost:5000"
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const CATEGORY_URL = "/category"
     const COLOR_URL = "/color"
     const PRODUCT_URL = "/product"
@@ -36,10 +36,11 @@ function Context(props) {
         });
     }
 
+    console.log(import.meta.env.VITE_API_BASE_URL, "API_BASE_URL");
 
     // function getCategory(id = null) {
     //     let URL = API_BASE_URL + CATEGORY_URL;
-    //     //http://localhost:5000/category/id
+    //    
     //     if (id != null) {
     //         URL += `/${id}`
 
@@ -61,7 +62,7 @@ function Context(props) {
 
     function getColors(id = null) {
         let URL = API_BASE_URL + COLOR_URL
-        //http://localhost:5000/category/id
+        
         if (id != null) {
             URL = URL + `/${id}`
 
