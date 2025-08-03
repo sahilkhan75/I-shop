@@ -21,6 +21,7 @@
   "dependencies": {
     "concurrently": "^9.1.2",
     "framer-motion": "^12.19.1",
+    "mongodb": "^6.18.0",
     "react-slick": "^0.30.3",
     "react-toastify": "^11.0.5",
     "slick-carousel": "^1.8.1",
