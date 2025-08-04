@@ -143,7 +143,7 @@ export default function Store() {
 
 
                         {/* Price Filter */}
-                        <div className="my-6 border-t border-gray-300 pt-4">
+                        {/* <div className="my-6 border-t border-gray-300 pt-4">
                             <h4 className="font-semibold text-yellow-400 mb-2 tracking-wide">BY PRICE</h4>
                             <div className="flex items-center gap-2 text-sm mb-2">
                                 <input
@@ -162,7 +162,46 @@ export default function Store() {
                                     placeholder="Max"
                                 />
                             </div>
+                        </div> */}
+
+                        {/* Price Filter */}
+                        <div className="my-6 border-t border-gray-300 pt-4">
+                            <h4 className="font-semibold text-yellow-400 mb-2 tracking-wide">BY PRICE</h4>
+
+                            {/* Range Line */}
+                            <div className="mb-4">
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="100000"
+                                    step="1000"
+                                    value={minPrice}
+                                    onChange={(e) => setMinPrice(Number(e.target.value))}
+                                    className="w-full accent-yellow-400"
+                                />
+                    
+                            </div>
+
+                            {/* Price Fields */}
+                            <div className="flex items-center gap-2 text-sm">
+                                <input
+                                    type="number"
+                                    value={minPrice}
+                                    onChange={(e) => setMinPrice(Number(e.target.value))}
+                                    className="w-1/2 px-2 py-1 rounded border border-gray-300 text-black"
+                                    placeholder="Min"
+                                />
+                                <span className="text-gray-600">—</span>
+                                <input
+                                    type="number"
+                                    value={maxPrice}
+                                    onChange={(e) => setMaxPrice(Number(e.target.value))}
+                                    className="w-1/2 px-2 py-1 rounded border border-gray-300 text-black"
+                                    placeholder="Max"
+                                />
+                            </div>
                         </div>
+
 
 
                         {/* Promo Image Section */}
