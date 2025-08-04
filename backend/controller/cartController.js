@@ -115,7 +115,43 @@ const cartController = {
                 error: error.message,
             });
         }
+    },
+
+    async removeFromCart(req, res) {
+        try {
+            const { userId, productId } = req.body;
+
+            if (!userId || !productId) {
+                return res.status(400).json({ msg: "User ID and Product ID are required", flag: 0 });
+            }
+
+            const deleted = await CartModel.deleteOne({
+                user_id: userId,
+                product_id: productId
+            });
+
+            if (!deleted) {
+                return res.status(404).json({ msg: "Item not found in cart", flag: 0 });
+            }
+
+            const updatedCart = await CartModel.find({ user_id: userId })
+                .populate({
+                    path: 'product_id',
+                    match: { status: true },
+                    select: '_id name thumbnail finalPrice originalPrice',
+                });
+
+            res.status(200).json({
+                msg: "Item removed from cart",
+                flag: 1,
+                cart: updatedCart
+            });
+        } catch (error) {
+            console.error("Remove cart item error:", error);
+            res.status(500).json({ msg: "Server error", flag: 0, error: error.message });
+        }
     }
+
 };
 
 module.exports = cartController;

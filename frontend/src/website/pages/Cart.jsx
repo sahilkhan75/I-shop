@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MainContext } from "../../Context";
-import { qtyHandler } from "../../redux/slice/cartSlice";
+import { qtyHandler, removeItem } from "../../redux/slice/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -37,6 +38,40 @@ const Cart = () => {
       maximumFractionDigits: 2,
     }).format(amount);
   };
+
+
+  const removeHandler = async (productId) => {
+    if (!user.data) return;
+
+    const item = cart.item.find((i) => i.productId === productId);
+    const product = products.find((p) => p._id === productId);
+
+    
+
+    if (!item || !product) return;
+
+    try {
+      await axios.post(`${API_BASE_URL}/cart/remove-item`, {
+        userId: user.data._id,
+        productId:item.productId,
+
+      });
+      
+      dispatch(removeItem({
+        productId,
+        qty: item.qty,
+        finalPrice: product.finalPrice,
+        originalPrice: product.originalPrice,
+      }));
+    } catch (err) {
+      console.error("Error removing item:", err);
+    }
+  };
+
+
+
+
+
 
   return (
     <div className="min-h-screen p-6 bg-white text-black">
@@ -75,16 +110,15 @@ const Cart = () => {
                     <div className="flex justify-between items-start">
                       <h2 className="text-lg font-semibold">{product.name}</h2>
                       <div
-                        className={`px-2 py-1 text-xs rounded ${
-                          index === 0
-                            ? "bg-green-100 text-green-700"
-                            : "bg-black text-white"
-                        }`}
+                        className={`px-2 py-1 text-xs rounded ${index === 0
+                          ? "bg-green-100 text-green-700"
+                          : "bg-black text-white"
+                          }`}
                       >
                         {index === 0
                           ? formatCurrencyINR(
-                              product.originalPrice - product.finalPrice
-                            )
+                            product.originalPrice - product.finalPrice
+                          )
                           : "NEW"}
                       </div>
                     </div>
@@ -135,9 +169,13 @@ const Cart = () => {
                       <span className="text-green-600">In stock</span>
                     </div>
 
-                    <button className="mt-3 text-sm text-red-600 hover:underline">
+                    <button
+                      onClick={() => removeHandler(item.productId)}
+                      className="mt-3 text-sm text-red-600 hover:underline"
+                    >
                       Remove from Cart
                     </button>
+
                   </div>
                 </div>
               );

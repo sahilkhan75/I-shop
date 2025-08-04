@@ -53,11 +53,21 @@ export const cartSlice = createSlice({
             localStorage.setItem('cart', JSON.stringify(state));
 
         },
-        emptycart(state){
-         state.item =[];
-         state.finalTotal=0;
-         state.originalTotal=0;
-         localStorage.removeItem("cart")
+
+            removeItem(state, action) {
+                const { productId, finalPrice, originalPrice, qty } = action.payload;
+                state.item = state.item.filter(item => item.productId !== productId);
+                state.finalTotal -= Number(finalPrice) * qty;
+                state.originalTotal -= Number(originalPrice) * qty;
+
+                localStorage.setItem('cart', JSON.stringify(state));
+            },
+
+        emptycart(state) {
+            state.item = [];
+            state.finalTotal = 0;
+            state.originalTotal = 0;
+            localStorage.removeItem("cart")
         },
         setCartFromDb(state, action) {
             const dbCart = action.payload; // array of cart items from backend
@@ -82,7 +92,7 @@ export const cartSlice = createSlice({
     },
 })
 
-export const { lsToCart, addItem, qtyHandler , emptycart,setCartFromDb} = cartSlice.actions
+export const { lsToCart, addItem, qtyHandler, emptycart, setCartFromDb, removeItem } = cartSlice.actions
 
 export default cartSlice.reducer
 
