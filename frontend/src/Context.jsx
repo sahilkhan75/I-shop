@@ -36,7 +36,7 @@ function Context(props) {
         });
     }
 
-    console.log(import.meta.env.VITE_API_BASE_URL, "API_BASE_URL");
+    // console.log(import.meta.env.VITE_API_BASE_URL, "API_BASE_URL");
 
     // function getCategory(id = null) {
     //     let URL = API_BASE_URL + CATEGORY_URL;
@@ -83,7 +83,7 @@ function Context(props) {
 
 
     function getProduct(id = null, limit = 0, categorySlug = null, colorSlug = null, minPrice = 0, maxPrice = 100000) {
-        console.log(limit, "limit");
+        // console.log(limit, "limit");
 
         let URL = API_BASE_URL + PRODUCT_URL;
 

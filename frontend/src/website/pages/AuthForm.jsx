@@ -84,6 +84,8 @@ export default function AuthForm() {
           })
         );
 
+         dispatch(setCartFromDb(moveCartRes.data.cart));
+
         const redirectTo = searchParams.get("ref") === "checkout" ? "/checkout" : "/";
         navigate(redirectTo);
       }

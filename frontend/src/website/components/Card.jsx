@@ -253,8 +253,6 @@ const Card = () => {
           </div> */}
 
           <TopCategories />
-
-
         </div >
       </div >
 
