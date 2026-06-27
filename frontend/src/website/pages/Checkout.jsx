@@ -79,7 +79,7 @@ export default function Checkout() {
       user_id: user._id,
       order_total: cart.finalTotal,
       payment_mode: paymentMode,
-      shipping_details: user.shipping_address[selectedAddressIndex]
+      shipping_details: shipping_details
     }).then(
       (response) => {
         notify(response.data.msg, response.data.flag)
